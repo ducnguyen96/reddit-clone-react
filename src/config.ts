@@ -17,13 +17,6 @@ export const local = {
     origin: "http://localhost:5000",
     path: "/graphql",
   },
-  // Firebase / Firestore (optional)
-  // https://firebase.google.com/docs/firestore
-  firebase: {
-    authKey: "xxxxx",
-    authDomain: "https://example.firebaseapp.com",
-    projectId: "example",
-  },
 };
 
 /**
@@ -39,11 +32,6 @@ export const test: typeof local = {
     ...local.api,
     origin: "https://us-central1.example-test.cloudfunctions.net",
   },
-  firebase: {
-    authKey: "xxxxx",
-    authDomain: "https://example-test.firebaseapp.com",
-    projectId: "example-test",
-  },
 };
 
 /**
@@ -57,12 +45,7 @@ export const prod: typeof local = {
   },
   api: {
     ...local.api,
-    // origin: "https://api.ducnguyen96.xyz",
-  },
-  firebase: {
-    authKey: "xxxxx",
-    authDomain: "https://example.firebaseapp.com",
-    projectId: "example",
+    origin: "https://api.ducnguyen96.xyz",
   },
 };
 

@@ -17,7 +17,7 @@ export function createRelay(config: Config = {}): Environment {
   const network = Network.create((operation, variables): Promise<any> => {
     const jwt = localStorage.getItem("jwt");
     const cookie = config.request?.headers.get("cookie");
-    return fetch(`${apiUrl}${appConfig.api.path}`, {
+    return fetch(`${apiUrl}`, {
       method: "POST",
       headers: {
         ...(cookie && { cookie }),

@@ -13,7 +13,7 @@ const {
 
 // Get GraphQL API URL for the the selected environment.
 // Example: `yarn update-schema --env=test`
-const url = `http://localhost:5000/graphql`;
+const url = `http://localhost:5000`;
 
 // Download and save GraphQL API schema
 got
