@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "rm -f /dist && tsc && vite build",
     "serve": "vite preview",
     "relay": "relay-compiler",
     "update-schema": "node ./scripts/update-schema"
