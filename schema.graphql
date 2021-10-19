@@ -1,0 +1,304 @@
+#
+directive @binding(
+  constraint: String!
+) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
+
+#
+type Community {
+  #
+  id: ID!
+
+  #
+  name: String!
+
+  #
+  slug: String!
+
+  #
+  type: CommunityType!
+
+  #
+  isAdult: Boolean!
+
+  #
+  createdAt: String!
+
+  #
+  updatedAt: String!
+}
+
+#
+type CommunityPagination {
+  #
+  length: Int!
+
+  #
+  currentPage: Int!
+
+  #
+  communities: [Community!]!
+}
+
+#
+enum CommunityType {
+  #
+  Public
+
+  #
+  Restricted
+
+  #
+  Private
+}
+
+#
+input CreateCommunityInput {
+  #
+  name: String!
+
+  #
+  type: CommunityType!
+
+  #
+  isAdult: Boolean!
+}
+
+#
+input CreatePostInput {
+  #
+  title: String!
+
+  #
+  content: String!
+
+  #
+  type: PostType!
+
+  #
+  contentMode: InputContentMode!
+
+  #
+  communityId: ID!
+}
+
+#
+type CustomError {
+  #
+  message: String!
+
+  #
+  path: String!
+}
+
+#
+enum GENDER {
+  #
+  MALE
+
+  #
+  FEMALE
+}
+
+#
+enum InputContentMode {
+  #
+  MarkDown
+
+  #
+  TextEditor
+}
+
+#
+type Mutation {
+  #
+  createCommunity(input: CreateCommunityInput!): Community!
+
+  #
+  createPost(input: CreatePostInput!): Post!
+
+  #
+  register(input: UserRegisterInput!): RegisterResult!
+
+  #
+  login(input: UserLoginInput!): TokenPayloadDto!
+
+  #
+  signOut: Boolean
+}
+
+#
+type Post {
+  #
+  id: ID!
+
+  #
+  title: String!
+
+  #
+  slug: String!
+
+  #
+  content: String!
+
+  #
+  type: PostType!
+
+  #
+  contentMode: InputContentMode!
+
+  #
+  upVotes: Int!
+
+  #
+  downVotes: Int!
+
+  #
+  createdAt: String!
+
+  #
+  updatedAt: String!
+
+  #
+  community: Community!
+
+  #
+  owner: User!
+}
+
+#
+type PostPagination {
+  #
+  length: Int!
+
+  #
+  currentPage: Int!
+
+  #
+  posts: [Post!]!
+}
+
+#
+enum PostType {
+  #
+  Post
+
+  #
+  Image_Video
+
+  #
+  Link
+}
+
+#
+type Query {
+  #
+  getCommunity(slug: String!): Community!
+
+  #
+  queryCommunity(input: QueryCommunityInput!): CommunityPagination!
+
+  #
+  getPost(slug: String!): Post!
+
+  #
+  queryPost(input: QueryPostInput!): PostPagination!
+
+  #
+  me: User
+}
+
+#
+input QueryCommunityInput {
+  #
+  limit: Int
+
+  #
+  page: Int
+}
+
+#
+input QueryPostInput {
+  #
+  limit: Int
+
+  #
+  page: Int
+}
+
+#
+type RegisterBadRequest {
+  #
+  errors: [CustomError!]!
+}
+
+#
+type RegisterInternalServerError {
+  #
+  error: CustomError!
+}
+
+#
+type RegisterPayload {
+  #
+  user: User!
+
+  #
+  token: TokenPayloadDto!
+}
+
+#
+union RegisterResult =
+    RegisterPayload
+  | RegisterBadRequest
+  | RegisterInternalServerError
+
+#
+type TokenPayloadDto {
+  #
+  expiresIn: Int
+
+  #
+  accessToken: String
+}
+
+#
+type User {
+  #
+  id: ID!
+
+  #
+  username: String!
+
+  #
+  email: String
+
+  #
+  avatar: String
+
+  #
+  createdAt: String!
+
+  #
+  updatedAt: String!
+}
+
+#
+input UserLoginInput {
+  #
+  username: String!
+
+  #
+  password: String!
+}
+
+#
+input UserRegisterInput {
+  #
+  username: String!
+
+  #
+  password: String!
+
+  #
+  repeatPassword: String!
+}

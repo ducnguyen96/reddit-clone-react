@@ -1,0 +1,39 @@
+{
+  "name": "reddit-clone",
+  "version": "0.0.0",
+  "author": {
+    "name": "ducnguyen96",
+    "email": "ducng948@gmail.com",
+    "url": "ducnguyen96.github.io"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "relay": "relay-compiler",
+    "update-schema": "node ./scripts/update-schema"
+  },
+  "dependencies": {
+    "history": "^5.0.1",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-relay": "^12.0.0",
+    "relay-runtime": "^12.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-relay": "^11.0.2",
+    "@types/relay-runtime": "^12.0.0",
+    "@vitejs/plugin-react": "^1.0.0",
+    "got": "^11.8.2",
+    "graphql": "^15.6.1",
+    "prettier": "^2.4.1",
+    "relay-compiler": "^12.0.0",
+    "relay-compiler-language-typescript": "^14.2.1",
+    "relay-config": "^12.0.0",
+    "typescript": "^4.3.2",
+    "vite": "^2.6.4",
+    "vite-plugin-relay": "^1.0.6"
+  }
+}
