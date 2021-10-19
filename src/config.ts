@@ -1,9 +1,3 @@
-/* SPDX-FileCopyrightText: 2014-present Kriasoft <hello@kriasoft.com> */
-/* SPDX-License-Identifier: MIT */
-
-/**
- * Client-side application settings for the local development environment.
- */
 export const local = {
   // Core application settings
   app: {
@@ -14,8 +8,7 @@ export const local = {
   // GraphQL API and OAuth endpoint(s)
   // https://github.com/kriasoft/node-starter-kit
   api: {
-    origin: "http://localhost:5000",
-    path: "/graphql",
+    origin: "https://api.ducnguyen96.xyz",
   },
 };
 
