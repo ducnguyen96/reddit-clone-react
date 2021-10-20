@@ -21,7 +21,7 @@ got
   .json()
   .then((res) => {
     const schema = buildClientSchema(res.data);
-    const filename = path.resolve(__dirname, "../schema.graphql");
+    const filename = path.resolve(__dirname, "../src/graphql/schema.graphql");
     let output = printSchema(schema, { commentDescriptions: true });
     output = format(output, { parser: "graphql" });
     fs.writeFileSync(filename, output, { encoding: "utf-8" });

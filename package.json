@@ -9,12 +9,17 @@
   "scripts": {
     "dev": "vite",
     "build": "rm -f /dist && tsc && vite build",
-    "serve": "vite preview",
+    "serve": "vite preview --port 3000",
     "relay": "relay-compiler",
     "update-schema": "node ./scripts/update-schema"
   },
   "dependencies": {
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/icons-material": "^5.0.4",
+    "@mui/material": "^5.0.4",
     "history": "^5.0.1",
+    "path-to-regexp": "^6.2.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-relay": "^12.0.0",

@@ -4,23 +4,23 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type LoginDialogMeQueryVariables = {};
-export type LoginDialogMeQueryResponse = {
+export type homeQueryVariables = {};
+export type homeQueryResponse = {
     readonly me: {
         readonly id: string;
         readonly username: string;
         readonly " $fragmentRefs": FragmentRefs<"CurrentUser_me">;
     } | null;
 };
-export type LoginDialogMeQuery = {
-    readonly response: LoginDialogMeQueryResponse;
-    readonly variables: LoginDialogMeQueryVariables;
+export type homeQuery = {
+    readonly response: homeQueryResponse;
+    readonly variables: homeQueryVariables;
 };
 
 
 
 /*
-query LoginDialogMeQuery {
+query homeQuery {
   me {
     ...CurrentUser_me
     id
@@ -54,7 +54,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "LoginDialogMeQuery",
+    "name": "homeQuery",
     "selections": [
       {
         "alias": null,
@@ -82,7 +82,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "LoginDialogMeQuery",
+    "name": "homeQuery",
     "selections": [
       {
         "alias": null,
@@ -100,14 +100,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "30974437645db9c90fb6d1b110630d40",
+    "cacheID": "56e8f0aeb0658ac29cea80e170229ee3",
     "id": null,
     "metadata": {},
-    "name": "LoginDialogMeQuery",
+    "name": "homeQuery",
     "operationKind": "query",
-    "text": "query LoginDialogMeQuery {\n  me {\n    ...CurrentUser_me\n    id\n    username\n  }\n}\n\nfragment CurrentUser_me on User {\n  id\n  username\n}\n"
+    "text": "query homeQuery {\n  me {\n    ...CurrentUser_me\n    id\n    username\n  }\n}\n\nfragment CurrentUser_me on User {\n  id\n  username\n}\n"
   }
 };
 })();
-(node as any).hash = '40ecdeb1cf2575da12de1d5a1babc593';
+(node as any).hash = 'dd8050d8b49cd0a1506d9919d3c9d42b';
 export default node;

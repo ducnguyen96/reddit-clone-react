@@ -8,7 +8,7 @@ export const local = {
   // GraphQL API and OAuth endpoint(s)
   // https://github.com/kriasoft/node-starter-kit
   api: {
-    origin: "https://api.ducnguyen96.xyz",
+    origin: "http://localhost:5000",
   },
 };
 

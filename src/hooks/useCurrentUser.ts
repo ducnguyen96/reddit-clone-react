@@ -1,6 +1,3 @@
-/* SPDX-FileCopyrightText: 2014-present Kriasoft <hello@kriasoft.com> */
-/* SPDX-License-Identifier: MIT */
-
 import * as React from "react";
 import {
   fetchQuery,
@@ -9,11 +6,11 @@ import {
   useRelayEnvironment,
 } from "react-relay";
 import { createOperationDescriptor, getRequest, Snapshot } from "relay-runtime";
-import { CurrentUser_me } from "../fragments/CurrentUser";
 import {
-  CurrentUser_me$key,
+  CurrentUser_me,
   CurrentUser_me$data,
-} from "../fragments/__generated__/CurrentUser_me.graphql";
+  CurrentUser_me$key,
+} from "../fragments";
 import type { useCurrentUserQuery as Query } from "./__generated__/useCurrentUserQuery.graphql";
 
 const variables = {};
