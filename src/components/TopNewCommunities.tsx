@@ -4,14 +4,11 @@ import {
   Box,
   Button,
   Divider,
-  Link,
   List,
   ListItem,
-  ListItemText,
   Paper,
   Typography,
 } from "@mui/material";
-import { stringAvatar } from "../utils/stringAvatar";
 
 export const TopNewCommunities = () => {
   const style = {

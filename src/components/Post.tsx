@@ -89,7 +89,7 @@ export const Post = (props: PostProps) => {
             <Typography variant="h4" sx={{ fontWeight: "bold" }} color={color}>
               Docker networks and container separation.
             </Typography>
-            <Typography variant="h5" color={postColor}>
+            <Typography variant="body1" color={postColor}>
               <ReactMarkdown children={md} remarkPlugins={[remarkGfm]} />
             </Typography>
           </Box>

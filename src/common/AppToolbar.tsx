@@ -1,6 +1,14 @@
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { ArrowDropDown, NotificationsNone } from "@mui/icons-material";
+import {
+  ArrowDropDown,
+  ContentCopy,
+  ContentCut,
+  ContentPaste,
+  Home,
+  KeyboardArrowDownOutlined,
+  NotificationsNone,
+} from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   alpha,
@@ -12,7 +20,12 @@ import {
   Chip,
   IconButton,
   Link,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   OutlinedInput,
+  Paper,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -30,6 +43,8 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
   const { sx, onChangeTheme, ...other } = props;
   const menuAnchorRef = React.createRef<HTMLButtonElement>();
   const theme = useTheme();
+  // @ts-ignore
+  const mode: string = theme.palette.mode;
 
   const [anchorEl, setAnchorEl] = React.useState({
     userMenu: null as HTMLElement | null,
@@ -119,6 +134,19 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
     },
   }));
 
+  // Communities Drop Menu
+  const [communityMenuAnchorEl, setCommunityMenuAnchorEl] =
+    React.useState<null | HTMLElement>(null);
+  const isCommunityMenuOpen = Boolean(communityMenuAnchorEl);
+  const handleClickOpenCommunityMenu = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setCommunityMenuAnchorEl(event.currentTarget);
+  };
+  const handleCloseCommunityMenu = () => {
+    setCommunityMenuAnchorEl(null);
+  };
+
   return (
     <AppBar
       sx={{
@@ -126,18 +154,93 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
         ...sx,
       }}
       color="default"
-      elevation={1}
+      elevation={0}
       {...other}
       position="static"
     >
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Toolbar
+        sx={{
+          display: "flex",
+          backgroundColor: mode == "light" ? "white" : "#121212",
+        }}
+      >
         {/* App name / logo */}
 
-        <Typography variant="h1" sx={{ fontSize: "1.5rem", fontWeight: 500 }}>
-          <Link color="inherit" underline="none" href="/" onClick={navigate}>
-            {config.app.name}
-          </Link>
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="h1" sx={{ fontSize: "1.5rem", fontWeight: 500 }}>
+            <Link color="inherit" underline="none" href="/" onClick={navigate}>
+              {config.app.name}
+            </Link>
+          </Typography>
+          <Box sx={{ width: "270px", marginLeft: "10px" }}>
+            {/* Button to activate menu */}
+            <Button
+              variant="text"
+              sx={{
+                width: "100%",
+                color: "inherit",
+                backgroundColor: "inherit",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              onClick={handleClickOpenCommunityMenu}
+            >
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Home />
+                <Typography
+                  variant="h4"
+                  sx={{ fontWeight: "bold", marginLeft: "8px" }}
+                >
+                  Home
+                </Typography>
+              </Box>
+              <KeyboardArrowDownOutlined />
+            </Button>
+
+            {/* Menu */}
+            <Menu
+              id="communitiesMenu"
+              anchorEl={communityMenuAnchorEl}
+              open={isCommunityMenuOpen}
+              onClose={handleCloseCommunityMenu}
+              MenuListProps={{
+                style: {
+                  padding: 0,
+                  width: "270px",
+                  maxWidth: "100",
+                },
+              }}
+              PaperProps={{ elevation: 0 }}
+            >
+              <MenuItem>
+                <ListItemIcon>
+                  <ContentCut fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Cut</ListItemText>
+                <Typography variant="body2">⌘X</Typography>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <ContentCopy fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Copy</ListItemText>
+                <Typography variant="body2" color="text.secondary">
+                  ⌘C
+                </Typography>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <ContentPaste fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Paste</ListItemText>
+                <Typography variant="body2" color="text.secondary">
+                  ⌘V
+                </Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
+        </Box>
 
         <Search>
           <SearchIconWrapper>
@@ -153,7 +256,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
 
         {/* Account related controls (icon buttons) */}
 
-        <Box>
+        <Box sx={{ marginLeft: "auto" }}>
           {user && (
             <Chip
               sx={{

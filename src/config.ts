@@ -7,8 +7,8 @@ export const local = {
   },
   // GraphQL API and OAuth endpoint(s)
   api: {
-    origin: "http://localhost:5000",
-    // origin: "https://api.ducnguyen96.xyz",
+    // origin: "http://localhost:5000",
+    origin: "https://api.ducnguyen96.xyz",
   },
 };
 
