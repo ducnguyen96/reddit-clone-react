@@ -2,16 +2,18 @@
 /* SPDX-License-Identifier: MIT */
 
 import { Theme } from "@emotion/react";
-import { createTheme, PaletteMode } from "@mui/material";
-import { components } from "./components";
+import { createTheme, PaletteMode, ThemeOptions } from "@mui/material";
+import { createComponentThemeOptions } from "./components";
 
 /**
  * Customized Material UI themes for "light" and "dark" modes.
  *
  * @see https://next.material-ui.com/customization/default-theme/
  */
-const themes = (["light", "dark"] as PaletteMode[]).map((mode) =>
-  createTheme(
+const themes = (["light", "dark"] as PaletteMode[]).map((mode) => {
+  const components: ThemeOptions["components"] =
+    createComponentThemeOptions(mode);
+  return createTheme(
     {
       palette: {
         mode,
@@ -19,7 +21,11 @@ const themes = (["light", "dark"] as PaletteMode[]).map((mode) =>
           main: mode === "light" ? "rgb(24,119,242)" : "rgb(45,136,255)",
         },
         background: {
-          default: mode === "light" ? "rgb(240,242,245)" : "rgb(24,25,26)",
+          default: mode === "light" ? "rgb(218, 224, 230)" : "rgb(0 0 0)",
+        },
+        neutral: {
+          main: mode == "light" ? "#828486" : "#828486",
+          contrastText: "#fff",
         },
       },
 
@@ -38,7 +44,6 @@ const themes = (["light", "dark"] as PaletteMode[]).map((mode) =>
           `sans-serif`,
         ].join(","),
       },
-
       components,
     },
     {
@@ -52,10 +57,22 @@ const themes = (["light", "dark"] as PaletteMode[]).map((mode) =>
         button: { textTransform: "none" },
       },
     }
-  )
-);
+  );
+});
 
 export default {
   light: themes[0],
   dark: themes[1],
 } as { [key in PaletteMode]: Theme };
+
+declare module "@mui/material/styles" {
+  interface PaletteOptions {
+    neutral?: PaletteOptions["primary"];
+  }
+}
+
+// declare module "@mui/material" {
+//   interface Button {
+
+//   }
+// }

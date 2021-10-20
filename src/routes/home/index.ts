@@ -8,15 +8,15 @@ import type { homeQueryResponse } from "./__generated__/homeQuery.graphql";
  */
 export default {
   path: "/",
-  query: graphql`
-    query homeQuery {
-      me {
-        ...CurrentUser_me
-        id
-        username
-      }
-    }
-  `,
+  // query: graphql`
+  //   query homeQuery {
+  //     me {
+  //       ...CurrentUser_me
+  //       id
+  //       username
+  //     }
+  //   }
+  // `,
   component: () => import(/* webpackChunkName: "home" */ "./Home"),
   response: (data) => ({
     title: "Reddit Clone - ducnguyen96",

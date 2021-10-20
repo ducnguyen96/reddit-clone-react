@@ -1,17 +1,22 @@
 import { Box } from "@mui/material";
-import * as React from "react";
-import { useLoginDialog, useNavigate } from "../../hooks";
+import { CreatePostHome } from "../../components/CreatePostHome";
+import { Post } from "../../components/Post";
+import { SortPost } from "../../components/SortPost";
 import type { homeQueryResponse as Props } from "./__generated__/homeQuery.graphql";
 
 export default function Home(props: Props): JSX.Element {
-  const { me } = props;
-  const loginDialog = useLoginDialog();
-  const navigate = useNavigate();
-
-  function signIn(event: React.MouseEvent<HTMLElement>) {
-    event.preventDefault();
-    loginDialog.show();
-  }
-
-  return <Box></Box>;
+  return (
+    <>
+      <Box
+        sx={{ margin: "20px 24px", display: "flex", justifyContent: "center" }}
+      >
+        <Box sx={{ width: "640px" }}>
+          <CreatePostHome />
+          <SortPost />
+          <Post />
+        </Box>
+        <Box sx={{ width: "312px", marginLeft: "24px" }}>Right</Box>
+      </Box>
+    </>
+  );
 }

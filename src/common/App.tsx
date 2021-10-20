@@ -91,7 +91,6 @@ export class App extends React.Component<AppProps> {
             <LocationContext.Provider value={location}>
               <CssBaseline />
               <AppToolbar onChangeTheme={this.handleChangeTheme} />
-              <Toolbar />
               {route?.component
                 ? React.createElement(route.component, route.props)
                 : null}
