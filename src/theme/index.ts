@@ -25,6 +25,7 @@ const themes = (["light", "dark"] as PaletteMode[]).map((mode) => {
         },
         neutral: {
           main: mode == "light" ? "#828486" : "#828486",
+          "800": mode == "light" ? "rgb(0 0 0)" : "rgb(215, 218, 220)",
           contrastText: "#fff",
         },
       },

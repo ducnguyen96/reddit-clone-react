@@ -1,11 +1,14 @@
 import { Button, Paper } from "@mui/material";
 import { AcUnit, AddRoad, Height, PlusOne } from "@mui/icons-material";
-import { useTheme } from "@emotion/react";
+import { Theme } from "@emotion/react";
 
-export const SortPost = () => {
-  const theme = useTheme();
+export type SortPostProps = {
+  theme: Theme;
+};
+
+export const SortPost = (props: SortPostProps) => {
   // @ts-ignore
-  const color = theme.palette.neutral.main;
+  const color = props.theme.palette.neutral.main;
   // console.log("theme :", theme.palette.neutral.main);
   return (
     <>

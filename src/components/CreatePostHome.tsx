@@ -2,7 +2,11 @@ import { Avatar, IconButton, Paper, TextField } from "@mui/material";
 import { stringAvatar } from "../utils/stringAvatar";
 import { Image, Link } from "@mui/icons-material";
 
-export const CreatePostHome = () => {
+export type CreatePostHomeProps = {
+  username: string;
+};
+
+export const CreatePostHome = (props: CreatePostHomeProps) => {
   return (
     <>
       <Paper
@@ -13,7 +17,7 @@ export const CreatePostHome = () => {
           marginBottom: "16px",
         }}
       >
-        <Avatar {...stringAvatar("Kent Dodds")} />
+        <Avatar {...stringAvatar(props.username || "U")} />
         <TextField
           label="Create Post"
           id="outlined-size-small"
