@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import { Button, OutlinedInput, Paper, Typography } from "@mui/material";
 import { useState } from "react";
+import { MyEditor } from "../editor/MyEditor";
 
 export const CreatePostEditor = () => {
   const theme = useTheme();
@@ -119,6 +120,7 @@ export const CreatePostEditor = () => {
             sx={{
               height: "35px",
               color: "inherit",
+              marginBottom: "15px",
             }}
             value={title}
             onChange={handleOnChangeTitle}
@@ -135,6 +137,7 @@ export const CreatePostEditor = () => {
           >
             {`${titleLength}/300`}
           </Typography>
+          <MyEditor />
         </Paper>
       </Paper>
     </>
