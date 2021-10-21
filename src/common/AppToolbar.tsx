@@ -3,9 +3,6 @@ import styled from "@emotion/styled";
 import {
   AddOutlined,
   ArrowDropDown,
-  ContentCopy,
-  ContentCut,
-  ContentPaste,
   Home,
   KeyboardArrowDownOutlined,
   NotificationsNone,
@@ -24,13 +21,10 @@ import {
   Chip,
   IconButton,
   Link,
-  ListItemIcon,
-  ListItemText,
   Menu,
   MenuItem,
   OutlinedInput,
-  Paper,
-  TextField,
+  Popover,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -215,20 +209,21 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
             </Button>
 
             {/* Communities Menu */}
-            <Menu
+            <Popover
               id="communitiesMenu"
               anchorEl={communityMenuAnchorEl}
               open={isCommunityMenuOpen}
               onClose={handleCloseCommunityMenu}
-              MenuListProps={{
-                style: {
-                  padding: 0,
-                  width: "270px",
-                  maxWidth: "100",
-                  maxHeight: "482px",
-                },
-              }}
-              PaperProps={{ elevation: 0 }}
+              // MenuListProps={{
+              //   style: {
+              //     padding: 0,
+              //     width: "270px",
+              //     maxWidth: "100",
+              //     maxHeight: "482px",
+              //   },
+              // }}
+              sx={{ top: "32px" }}
+              PaperProps={{ elevation: 0, style: { borderRadius: 0 } }}
             >
               <OutlinedInput
                 placeholder="Filter"
@@ -239,6 +234,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                   margin: "16px",
                   color: "inherit",
                 }}
+                autoFocus
               />
               <Box
                 sx={{
@@ -268,7 +264,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                   <StarOutline sx={{ marginLeft: "auto" }} />
                 </MenuItem>
               ))}
-            </Menu>
+            </Popover>
           </Box>
         </Box>
 

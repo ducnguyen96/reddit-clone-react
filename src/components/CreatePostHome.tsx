@@ -1,12 +1,14 @@
 import { Avatar, IconButton, OutlinedInput, Paper } from "@mui/material";
 import { stringAvatar } from "../utils/stringAvatar";
 import { Image, Link } from "@mui/icons-material";
+import { useLoginDialog } from "../hooks";
 
 export type CreatePostHomeProps = {
   username: string;
 };
 
 export const CreatePostHome = (props: CreatePostHomeProps) => {
+  const loginDialog = useLoginDialog();
   return (
     <>
       <Paper
@@ -26,6 +28,13 @@ export const CreatePostHome = (props: CreatePostHomeProps) => {
             height: "35px",
             color: "inherit",
             marginLeft: "10px",
+          }}
+          onClick={() => {
+            if (!!props.username) {
+              location.href = "/submit";
+            } else {
+              return loginDialog.show();
+            }
           }}
         />
         <IconButton aria-label="image">

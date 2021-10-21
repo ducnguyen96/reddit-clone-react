@@ -28,6 +28,9 @@ const themes = (["light", "dark"] as PaletteMode[]).map((mode) => {
           "800": mode == "light" ? "rgb(0 0 0)" : "rgb(215, 218, 220)",
           contrastText: "#fff",
         },
+        createPostButtonActive: {
+          main: mode == "light" ? "rgb(24,119,242)" : "#fff",
+        },
       },
 
       typography: {
@@ -69,6 +72,7 @@ export default {
 declare module "@mui/material/styles" {
   interface PaletteOptions {
     neutral?: PaletteOptions["primary"];
+    createPostButtonActive?: PaletteOptions["primary"];
   }
 }
 
