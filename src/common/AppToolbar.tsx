@@ -1,6 +1,7 @@
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import {
+  AddOutlined,
   ArrowDropDown,
   ContentCopy,
   ContentCut,
@@ -8,6 +9,9 @@ import {
   Home,
   KeyboardArrowDownOutlined,
   NotificationsNone,
+  Reddit,
+  StarOutline,
+  TextsmsOutlined,
 } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -26,6 +30,7 @@ import {
   MenuItem,
   OutlinedInput,
   Paper,
+  TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -123,7 +128,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
       // @ts-ignore
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+      paddingLeft: `calc(1em + ${theme.spacing(3)})`,
       // @ts-ignore
       transition: theme.transitions.create("width"),
       width: "100%",
@@ -162,12 +167,23 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
         sx={{
           display: "flex",
           backgroundColor: mode == "light" ? "white" : "#121212",
+          minHeight: "48px !important",
         }}
       >
         {/* App name / logo */}
 
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Typography variant="h1" sx={{ fontSize: "1.5rem", fontWeight: 500 }}>
+          <IconButton
+            sx={{
+              backgroundColor: "#FF4500",
+              width: "32px",
+              height: "32px",
+              marginRight: "5px",
+            }}
+          >
+            <Reddit sx={{ color: "white" }} />
+          </IconButton>
+          <Typography sx={{ fontSize: "1.4rem", fontWeight: 500 }}>
             <Link color="inherit" underline="none" href="/" onClick={navigate}>
               {config.app.name}
             </Link>
@@ -198,7 +214,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
               <KeyboardArrowDownOutlined />
             </Button>
 
-            {/* Menu */}
+            {/* Communities Menu */}
             <Menu
               id="communitiesMenu"
               anchorEl={communityMenuAnchorEl}
@@ -209,35 +225,49 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                   padding: 0,
                   width: "270px",
                   maxWidth: "100",
+                  maxHeight: "482px",
                 },
               }}
               PaperProps={{ elevation: 0 }}
             >
-              <MenuItem>
-                <ListItemIcon>
-                  <ContentCut fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Cut</ListItemText>
-                <Typography variant="body2">⌘X</Typography>
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon>
-                  <ContentCopy fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Copy</ListItemText>
-                <Typography variant="body2" color="text.secondary">
-                  ⌘C
-                </Typography>
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon>
-                  <ContentPaste fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Paste</ListItemText>
-                <Typography variant="body2" color="text.secondary">
-                  ⌘V
-                </Typography>
-              </MenuItem>
+              <OutlinedInput
+                placeholder="Filter"
+                size="small"
+                sx={{
+                  borderRadius: 0,
+                  height: "30px",
+                  margin: "16px",
+                  color: "inherit",
+                }}
+              />
+              <Box
+                sx={{
+                  padding: "0px 24px 8px",
+                  fontSize: "10px",
+                  fontWeight: "500",
+                }}
+              >
+                MY COMMUNITIES
+              </Box>
+              <Typography variant="h6"></Typography>
+              {[
+                "r/worldnews",
+                "r/UpliftingNews",
+                "r/nottheonion",
+                "r/technews",
+                "r/offbeat",
+              ].map((value, key) => (
+                <MenuItem key={key}>
+                  <Avatar
+                    {...{ children: value[3] }}
+                    sx={{ marginLeft: "8px", width: "25px", height: "25px" }}
+                  />
+                  <Typography sx={{ marginLeft: "8px" }} variant="h4">
+                    {value}
+                  </Typography>
+                  <StarOutline sx={{ marginLeft: "auto" }} />
+                </MenuItem>
+              ))}
             </Menu>
           </Box>
         </Box>
@@ -248,7 +278,10 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
           </SearchIconWrapper>
           <StyledInputBase
             placeholder="Search Reddit"
-            inputProps={{ "aria-label": "search" }}
+            inputProps={{
+              "aria-label": "search",
+              style: { padding: "6px 8px 6px 45px", fontSize: "14px" },
+            }}
           />
         </Search>
 
@@ -256,23 +289,19 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
 
         {/* Account related controls (icon buttons) */}
 
-        <Box sx={{ marginLeft: "auto" }}>
+        <Box sx={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
           {user && (
-            <Chip
+            <IconButton
               sx={{
-                height: 40,
-                borderRadius: 20,
-                fontWeight: 600,
+                marginLeft: (x) => x.spacing(1),
                 backgroundColor: (x) =>
                   x.palette.mode === "light"
                     ? x.palette.grey[300]
                     : x.palette.grey[700],
-                ".MuiChip-avatar": { width: 32, height: 32 },
+                width: 40,
+                height: 40,
               }}
-              component="a"
-              avatar={<Avatar alt={user.username || ""} src={""} />}
-              label={getFirstName(user.username || "")}
-              onClick={navigate}
+              children={<TextsmsOutlined />}
             />
           )}
           {user && (
@@ -290,6 +319,40 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
               onClick={openNotificationsMenu}
             />
           )}
+          {user && (
+            <IconButton
+              sx={{
+                marginLeft: (x) => x.spacing(1),
+                backgroundColor: (x) =>
+                  x.palette.mode === "light"
+                    ? x.palette.grey[300]
+                    : x.palette.grey[700],
+                width: 40,
+                height: 40,
+              }}
+              children={<AddOutlined />}
+            />
+          )}
+          {user && (
+            <Chip
+              sx={{
+                height: 40,
+                borderRadius: 20,
+                fontWeight: 600,
+                marginLeft: "8px",
+                backgroundColor: (x) =>
+                  x.palette.mode === "light"
+                    ? x.palette.grey[300]
+                    : x.palette.grey[700],
+                ".MuiChip-avatar": { width: 32, height: 32 },
+              }}
+              component="a"
+              avatar={<Avatar alt={user.username || ""} src={""} />}
+              label={getFirstName(user.username || "")}
+              onClick={navigate}
+            />
+          )}
+
           {user && (
             <IconButton
               ref={menuAnchorRef}

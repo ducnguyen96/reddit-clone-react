@@ -1,4 +1,4 @@
-import { Avatar, IconButton, Paper, TextField } from "@mui/material";
+import { Avatar, IconButton, OutlinedInput, Paper } from "@mui/material";
 import { stringAvatar } from "../utils/stringAvatar";
 import { Image, Link } from "@mui/icons-material";
 
@@ -18,12 +18,15 @@ export const CreatePostHome = (props: CreatePostHomeProps) => {
         }}
       >
         <Avatar {...stringAvatar(props.username || "U")} />
-        <TextField
-          label="Create Post"
-          id="outlined-size-small"
-          size="small"
+        <OutlinedInput
+          placeholder="Create Post"
           fullWidth
-          sx={{ marginLeft: "8px" }}
+          size="small"
+          sx={{
+            height: "35px",
+            color: "inherit",
+            marginLeft: "10px",
+          }}
         />
         <IconButton aria-label="image">
           <Image />

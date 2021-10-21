@@ -1,7 +1,7 @@
 export const local = {
   // Core application settings
   app: {
-    name: "Reddit Clone",
+    name: "Reddit",
     origin: "http://localhost:3000",
     env: "local" as "local" | "test" | "prod",
   },
