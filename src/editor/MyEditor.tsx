@@ -10,12 +10,12 @@ import "react-markdown-editor-lite/lib/index.css";
 // MdEditor.use(YOUR_PLUGINS_HERE);
 
 // Initialize a markdown parser
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+const mdParser = new MarkdownIt({ xhtmlOut: true, linkify: true });
 
 // Finish!
-function handleEditorChange({ html, text }) {
-  console.log(html);
-}
+// function handleEditorChange({ html, text }) {
+//   console.log(html);
+// }
 
 export const MyEditor = (props) => {
   const theme = useTheme();
@@ -29,6 +29,8 @@ export const MyEditor = (props) => {
         styles={css`
           .rc-md-editor {
             height: 500px;
+            padding-bottom: 0px !important;
+            border: 1px solid #969696 !important;
           }
           .editor-container > section.section.sec-md > textarea {
             color: ${color} !important;
@@ -41,12 +43,15 @@ export const MyEditor = (props) => {
           .custom-html-style {
             color: ${color} !important;
           }
+          .rc-md-navigation {
+            background: ${bgColor} !important;
+          }
         `}
       />
       <MdEditor
         // style={{ height: "500px" }}
         renderHTML={(text) => mdParser.render(text)}
-        onChange={handleEditorChange}
+        // onChange={handleEditorChange}
       />
     </>
   );

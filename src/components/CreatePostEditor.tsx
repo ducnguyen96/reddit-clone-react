@@ -11,8 +11,6 @@ import { MyEditor } from "../editor/MyEditor";
 
 export const CreatePostEditor = () => {
   const theme = useTheme();
-  // @ts-ignore
-  const mode = theme.palette.mode;
   const [activeButton, setActiveButton] = useState("post");
   const [title, setTitle] = useState("");
   const [titleLength, setTitleLength] = useState(0);
@@ -91,6 +89,7 @@ export const CreatePostEditor = () => {
               ...buttonColor("Link"),
             }}
             onClick={() => setActiveButton("Link")}
+            disabled
           >
             Link
           </Button>
@@ -106,6 +105,7 @@ export const CreatePostEditor = () => {
               ...buttonColor("Poll"),
             }}
             onClick={() => setActiveButton("Poll")}
+            disabled
           >
             Poll
           </Button>
@@ -119,8 +119,10 @@ export const CreatePostEditor = () => {
             size="small"
             sx={{
               height: "35px",
-              color: "inherit",
+              // @ts-ignore
+              color: theme.palette.text.secondary,
               marginBottom: "15px",
+              paddingRight: "45px",
             }}
             value={title}
             onChange={handleOnChangeTitle}

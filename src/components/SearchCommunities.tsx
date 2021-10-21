@@ -1,3 +1,4 @@
+import { useTheme } from "@emotion/react";
 import { CircleOutlined, KeyboardArrowDownOutlined } from "@mui/icons-material";
 import {
   Button,
@@ -10,6 +11,7 @@ import {
   Popover,
 } from "@mui/material";
 import * as React from "react";
+import { useCreateCommunityDialog } from "../hooks/useCreateCommunityDialog";
 
 export const SearchCommunities = () => {
   // Communities Drop Menu
@@ -47,6 +49,14 @@ export const SearchCommunities = () => {
       )
     );
   };
+
+  const theme = useTheme();
+
+  const communityDialog = useCreateCommunityDialog();
+  function createCommunity(event: React.MouseEvent): void {
+    event.preventDefault();
+    communityDialog.show();
+  }
 
   return (
     <Paper sx={{ width: "270px" }} elevation={0}>
@@ -93,7 +103,7 @@ export const SearchCommunities = () => {
         //   },
         // }}
         sx={{ top: "38px" }}
-        PaperProps={{ elevation: 0 }}
+        PaperProps={{ elevation: 1 }}
       >
         <OutlinedInput
           placeholder="Filter"
@@ -110,12 +120,30 @@ export const SearchCommunities = () => {
         />
         <Box
           sx={{
-            padding: "0px 24px 8px",
-            fontSize: "10px",
-            fontWeight: "500",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          MY COMMUNITIES
+          <Typography
+            sx={{
+              padding: "0px 24px 0px",
+              fontSize: "10px",
+              fontWeight: "bold",
+              // @ts-ignore
+              color: theme.palette.neutral.main,
+              textAlign: "center",
+            }}
+          >
+            MY COMMUNITIES
+          </Typography>
+          <Button
+            variant="text"
+            sx={{ borderRadius: "10px", fontWeight: "bold", fontSize: "small" }}
+            onClick={createCommunity}
+          >
+            Create New
+          </Button>
         </Box>
         <Typography variant="h6"></Typography>
         {filteredCommunities.map((value, key) => (
@@ -124,9 +152,21 @@ export const SearchCommunities = () => {
               {...{ children: value[2].toLowerCase() }}
               sx={{ marginLeft: "8px", width: "25px", height: "25px" }}
             />
-            <Typography sx={{ marginLeft: "8px" }} variant="h4">
-              {value}
-            </Typography>
+            <Box>
+              <Typography
+                sx={{ marginLeft: "8px", fontWeight: "bold" }}
+                variant="h5"
+              >
+                {value}
+              </Typography>
+              <Typography
+                // @ts-ignore
+                sx={{ marginLeft: "8px", color: theme.palette.neutral.main }}
+                variant="h6"
+              >
+                {"196.000 members"}
+              </Typography>
+            </Box>
           </MenuItem>
         ))}
       </Popover>

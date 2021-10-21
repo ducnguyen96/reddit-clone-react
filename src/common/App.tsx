@@ -3,6 +3,7 @@ import { CssBaseline, PaletteMode, Toolbar } from "@mui/material";
 import { Action, Update } from "history";
 import * as React from "react";
 import { Environment, RelayEnvironmentProvider } from "react-relay";
+import CreateCommunityDialog from "../components/CreateCommunity";
 import { History, HistoryContext, LocationContext } from "../core/history";
 import type { RouteResponse } from "../core/router";
 import { resolveRoute } from "../core/router";
@@ -96,6 +97,7 @@ export class App extends React.Component<AppProps> {
                 : null}
               <LoginDialog />
               <SignupDialog />
+              <CreateCommunityDialog />
             </LocationContext.Provider>
           </HistoryContext.Provider>
         </RelayEnvironmentProvider>
