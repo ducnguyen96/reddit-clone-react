@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import react, react-markdown-editor-lite, and a markdown parser you like
 import { css, Global, useTheme } from "@emotion/react";
 import MarkdownIt from "markdown-it";
@@ -29,13 +30,16 @@ export const MyEditor = (props) => {
           .rc-md-editor {
             height: 500px;
           }
-          .editor-container textarea {
+          .editor-container > section.section.sec-md > textarea {
             color: ${color} !important;
             background-color: ${bgColor} !important;
           }
           .editor-container > .section.sec-html {
-            color: ${color} !important;
             background-color: ${bgColor} !important;
+          }
+
+          .custom-html-style {
+            color: ${color} !important;
           }
         `}
       />

@@ -1,13 +1,7 @@
-import {
-  CircleOutlined,
-  Home,
-  KeyboardArrowDownOutlined,
-  StarOutline,
-} from "@mui/icons-material";
+import { CircleOutlined, KeyboardArrowDownOutlined } from "@mui/icons-material";
 import {
   Button,
   Typography,
-  Menu,
   OutlinedInput,
   MenuItem,
   Avatar,

@@ -146,6 +146,30 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
     setCommunityMenuAnchorEl(null);
   };
 
+  const communities = [
+    "r/worldnews",
+    "r/UpliftingNews",
+    "r/nottheonion",
+    "r/technews",
+    "r/offbeat",
+  ];
+
+  const [filteredCommunities, setFilteredCommunities] =
+    React.useState(communities);
+
+  const [filterValue, setFilterValue] = React.useState("");
+
+  const handleOnchangeFilter = (e: any) => {
+    e.preventDefault();
+    const value = e.target.value;
+    setFilterValue(value);
+    setFilteredCommunities(
+      communities.filter((c) =>
+        c.toLowerCase().startsWith(`r/${value}`.toLowerCase())
+      )
+    );
+  };
+
   return (
     <AppBar
       sx={{
@@ -235,6 +259,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                   color: "inherit",
                 }}
                 autoFocus
+                onChange={handleOnchangeFilter}
               />
               <Box
                 sx={{
@@ -246,13 +271,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                 MY COMMUNITIES
               </Box>
               <Typography variant="h6"></Typography>
-              {[
-                "r/worldnews",
-                "r/UpliftingNews",
-                "r/nottheonion",
-                "r/technews",
-                "r/offbeat",
-              ].map((value, key) => (
+              {filteredCommunities.map((value, key) => (
                 <MenuItem key={key}>
                   <Avatar
                     {...{ children: value[3] }}
