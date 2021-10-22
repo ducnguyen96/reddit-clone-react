@@ -14,7 +14,7 @@ export default function Home(props: Props): JSX.Element {
         sx={{ margin: "20px 24px", display: "flex", justifyContent: "center" }}
       >
         <Box sx={{ width: "640px" }}>
-          <CreatePostHome username={props.me?.username || ""} />
+          {props.me && <CreatePostHome username={props.me.username} />}
           <SortPost theme={theme} />
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((key) => (
             <Post theme={theme} key={key} />

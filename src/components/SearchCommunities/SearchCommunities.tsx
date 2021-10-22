@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import { useCreateCommunityDialog } from "../../hooks";
+import { CommunityList } from "./CommunityList";
 export const SearchCommunities = () => {
   // Communities Drop Menu
   const [communityMenuAnchorEl, setCommunityMenuAnchorEl] =
@@ -104,7 +105,8 @@ export const SearchCommunities = () => {
         sx={{ top: "38px" }}
         PaperProps={{ elevation: 1 }}
       >
-        <OutlinedInput
+        <CommunityList />
+        {/* <OutlinedInput
           placeholder="Filter"
           size="small"
           sx={{
@@ -167,7 +169,7 @@ export const SearchCommunities = () => {
               </Typography>
             </Box>
           </MenuItem>
-        ))}
+        ))} */}
       </Popover>
     </Paper>
   );

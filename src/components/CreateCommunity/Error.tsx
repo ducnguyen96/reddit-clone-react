@@ -48,7 +48,6 @@ export const ErrorWhenCreatingCommunity = ({
       },
       onCompleted: (res) => {
         dialog.hide();
-        console.log("res:", res);
       } /* Mutation completed */,
       onError: (error) => {
         console.log("error :", error);

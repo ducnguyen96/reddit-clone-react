@@ -11,7 +11,8 @@
     "build": "rm -f /dist && tsc && vite build",
     "serve": "vite preview --port 3000",
     "relay": "relay-compiler",
-    "update-schema": "node ./scripts/update-schema"
+    "update-schema": "node ./scripts/update-schema",
+    "typegen": "graphql-codegen --config ./src/graphql/codegen.yml"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",
@@ -31,6 +32,8 @@
     "remark-gfm": "^3.0.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.2.1",
+    "@graphql-codegen/typescript": "^2.2.4",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-relay": "^11.0.2",
@@ -42,7 +45,7 @@
     "relay-compiler": "^12.0.0",
     "relay-compiler-language-typescript": "^14.2.1",
     "relay-config": "^12.0.0",
-    "typescript": "^4.3.2",
+    "typescript": "^4.4.4",
     "vite": "^2.6.4",
     "vite-plugin-relay": "^1.0.6"
   }

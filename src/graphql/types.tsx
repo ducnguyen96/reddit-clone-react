@@ -17,6 +17,7 @@ export type Community = {
   id: Scalars['ID'];
   isAdult: Scalars['Boolean'];
   name: Scalars['String'];
+  numberOfMember: Scalars['Int'];
   slug: Scalars['String'];
   type: CommunityType;
   updatedAt: Scalars['String'];
@@ -127,6 +128,7 @@ export type Query = {
   __typename?: 'Query';
   getCommunity: Community;
   getPost: Post;
+  isCommunityNameExisted: Scalars['Boolean'];
   me?: Maybe<User>;
   queryCommunity: CommunityPagination;
   queryPost: PostPagination;
@@ -143,6 +145,11 @@ export type QueryGetPostArgs = {
 };
 
 
+export type QueryIsCommunityNameExistedArgs = {
+  name: Scalars['String'];
+};
+
+
 export type QueryQueryCommunityArgs = {
   input: QueryCommunityInput;
 };
@@ -154,6 +161,7 @@ export type QueryQueryPostArgs = {
 
 export type QueryCommunityInput = {
   limit?: Maybe<Scalars['Int']>;
+  onlyMine?: Maybe<Scalars['Boolean']>;
   page?: Maybe<Scalars['Int']>;
 };
 

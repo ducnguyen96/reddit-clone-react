@@ -1,22 +1,6 @@
 overwrite: true
-schema: "graphql/schema.graphql"
-# documents:
-#   - ../**/*.graphql
-# generates:
-#   graphql/types.ts:
-#     plugins:
-#       - typescript
-#   ../:
-#     preset: near-operation-file
-#     presetConfig:
-#       extension: .generated.tsx
-#       baseTypesPath: graphql/types.ts
-#     plugins:
-#       - typescript-operations
-#       - typescript-react-apollo
+schema: src/graphql/schema.graphql
 generates:
-  graphql/types.tsx:
+  src/graphql/types.tsx:
     plugins:
       - typescript
-      # - typescript-operations
-      # - typescript-react-query

@@ -6,3 +6,4 @@ export { useLoginDialog } from "./useLoginDialog";
 export { useNavigate } from "./useNavigate";
 export { useSignOut } from "./useSignOut";
 export { useCreateCommunityDialog } from "./useCreateCommunityDialog";
+export { useCommunityOnList } from "./useListCommunity";

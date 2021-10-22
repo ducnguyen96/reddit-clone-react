@@ -1,8 +1,16 @@
 import { Box, Divider, Typography } from "@mui/material";
 import { CreatePostEditor } from "../../components/CreatePostEditor/CreatePostEditor";
 import { SearchCommunities } from "../../components/SearchCommunities/SearchCommunities";
+import { useHistory, useLoginDialog } from "../../hooks";
+import { submitQueryResponse } from "./__generated__/submitQuery.graphql";
 
-export default function Submit(): JSX.Element {
+export default function Submit(props: submitQueryResponse): JSX.Element {
+  if (!props.me) {
+    const history = useHistory();
+    history.push("/");
+    const loginDialog = useLoginDialog();
+    loginDialog.show();
+  }
   return (
     <>
       <Box
