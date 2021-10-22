@@ -1,9 +1,9 @@
 import { useTheme } from "@emotion/react";
 import { Box } from "@mui/material";
-import { CreatePostHome } from "../../components/CreatePostHome";
-import { Post } from "../../components/Post";
-import { SortPost } from "../../components/SortPost";
-import { TopNewCommunities } from "../../components/TopNewCommunities";
+import { CreatePostHome } from "../../components/CreatePostHome/CreatePostHome";
+import { Post } from "../../components/Post/Post";
+import { SortPost } from "../../components/SortPost/SortPost";
+import { TopNewCommunities } from "../../components/TopNewCommunities/TopNewCommunities";
 import type { homeQueryResponse as Props } from "./__generated__/homeQuery.graphql";
 
 export default function Home(props: Props): JSX.Element {

@@ -11,8 +11,7 @@ import {
   Popover,
 } from "@mui/material";
 import * as React from "react";
-import { useCreateCommunityDialog } from "../hooks/useCreateCommunityDialog";
-
+import { useCreateCommunityDialog } from "../../hooks";
 export const SearchCommunities = () => {
   // Communities Drop Menu
   const [communityMenuAnchorEl, setCommunityMenuAnchorEl] =

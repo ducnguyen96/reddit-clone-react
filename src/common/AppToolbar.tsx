@@ -345,6 +345,9 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                 height: 40,
               }}
               children={<AddOutlined />}
+              onClick={() => {
+                location.href = "/submit";
+              }}
             />
           )}
           {user && (

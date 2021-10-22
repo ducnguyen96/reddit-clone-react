@@ -3,7 +3,7 @@ import { CssBaseline, PaletteMode, Toolbar } from "@mui/material";
 import { Action, Update } from "history";
 import * as React from "react";
 import { Environment, RelayEnvironmentProvider } from "react-relay";
-import CreateCommunityDialog from "../components/CreateCommunity";
+import CreateCommunityDialog from "../components/CreateCommunity/CreateCommunity";
 import { History, HistoryContext, LocationContext } from "../core/history";
 import type { RouteResponse } from "../core/router";
 import { resolveRoute } from "../core/router";

@@ -17,8 +17,11 @@ import {
 import { useTheme } from "@emotion/react";
 import { Info, LockRounded, Public, RemoveRedEye } from "@mui/icons-material";
 import Radio from "@mui/material/Radio";
-import { useState } from "react";
-import { useCreateCommunityDialog } from "../hooks/useCreateCommunityDialog";
+import { Suspense, useState } from "react";
+import { graphql } from "react-relay";
+import { useCreateCommunityDialog } from "../../hooks";
+import { ErrorWhenCreatingCommunity } from "./Error";
+import { CommunityType } from "../../graphql/types";
 
 export default function CreateCommunityDialog() {
   const communityDialog = useCreateCommunityDialog(true);
@@ -26,8 +29,21 @@ export default function CreateCommunityDialog() {
   const theme = useTheme();
 
   const [cName, setCName] = useState("");
+  const [cNameLength, setCNameLength] = useState(0);
+
+  const [isClicked, setIsClicked] = useState(false);
+  const [isAdult, setIsAdult] = useState(false);
+  const [cType, setCType] = useState(CommunityType.Public);
+
   const handleChangeCName = (e: any) => {
-    setCName(e.target.value);
+    e.preventDefault();
+    setIsClicked(false);
+    const value = e.target.value;
+    const length = value.length;
+    if (length <= 21) {
+      setCName(value);
+      setCNameLength(length);
+    }
   };
 
   return (
@@ -88,12 +104,22 @@ export default function CreateCommunityDialog() {
             r/
           </Typography>
         </Box>
+        {isClicked && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ErrorWhenCreatingCommunity
+              name={cName}
+              theme={theme}
+              type={cType}
+              isAdult={isAdult}
+            />
+          </Suspense>
+        )}
         <Typography
           // @ts-ignore
           sx={{ color: theme.palette.text.secondary, marginTop: "1rem" }}
           variant="h6"
         >
-          21 Characters remaining
+          {`${21 - cNameLength} Characters remaining`}
         </Typography>
         <FormControl component="fieldset">
           <Typography
@@ -108,11 +134,12 @@ export default function CreateCommunityDialog() {
           </Typography>
           <RadioGroup
             aria-label="Community type"
-            defaultValue="public"
+            defaultValue={CommunityType.Public}
             name="radio-buttons-group"
+            onChange={(e) => setCType(e.target.value as CommunityType)}
           >
             <FormControlLabel
-              value="public"
+              value={CommunityType.Public}
               control={<Radio />}
               label={
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -134,7 +161,7 @@ export default function CreateCommunityDialog() {
               }
             />
             <FormControlLabel
-              value="restricted"
+              value={CommunityType.Restricted}
               control={<Radio />}
               label={
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -157,7 +184,7 @@ export default function CreateCommunityDialog() {
               }
             />
             <FormControlLabel
-              value="private"
+              value={CommunityType.Private}
               control={<Radio />}
               label={
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -186,7 +213,7 @@ export default function CreateCommunityDialog() {
           Adult content
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Checkbox />
+          <Checkbox checked={isAdult} onClick={() => setIsAdult(!isAdult)} />
           <Typography
             variant="h6"
             sx={{
@@ -224,7 +251,7 @@ export default function CreateCommunityDialog() {
           Cancel
         </Button>
         <Button
-          onClick={communityDialog.hide}
+          onClick={() => setIsClicked(true)}
           variant="contained"
           // @ts-ignore
           sx={{ backgroundColor: theme.palette.neutral.main }}
@@ -235,3 +262,17 @@ export default function CreateCommunityDialog() {
     </Dialog>
   );
 }
+
+export const createCommunityMutation = graphql`
+  mutation CreateCommunityMutation($input: CreateCommunityInput!) {
+    createCommunity(input: $input) {
+      id
+      name
+      slug
+      type
+      isAdult
+      createdAt
+      updatedAt
+    }
+  }
+`;

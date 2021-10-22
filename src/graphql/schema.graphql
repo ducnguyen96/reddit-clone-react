@@ -198,6 +198,9 @@ type Query {
   queryCommunity(input: QueryCommunityInput!): CommunityPagination!
 
   #
+  isCommunityNameExisted(name: String!): Boolean!
+
+  #
   getPost(slug: String!): Post!
 
   #

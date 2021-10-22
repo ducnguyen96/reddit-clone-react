@@ -1,7 +1,7 @@
 import { Avatar, IconButton, OutlinedInput, Paper } from "@mui/material";
-import { stringAvatar } from "../utils/stringAvatar";
+import { stringAvatar } from "../../utils/stringAvatar";
 import { Image, Link } from "@mui/icons-material";
-import { useLoginDialog } from "../hooks";
+import { useLoginDialog } from "../../hooks";
 
 export type CreatePostHomeProps = {
   username: string;

@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { stringAvatar } from "../utils/stringAvatar";
+import { stringAvatar } from "../../utils/stringAvatar";
 
 export type PostProps = {
   theme: Theme;

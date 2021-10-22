@@ -7,7 +7,7 @@ import {
 } from "@mui/icons-material";
 import { Button, OutlinedInput, Paper, Typography } from "@mui/material";
 import { useState } from "react";
-import { MyEditor } from "../editor/MyEditor";
+import { MyEditor } from "../../editor/MyEditor";
 
 export const CreatePostEditor = () => {
   const theme = useTheme();

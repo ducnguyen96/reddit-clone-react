@@ -1,6 +1,6 @@
 import { Box, Divider, Typography } from "@mui/material";
-import { CreatePostEditor } from "../../components/CreatePostEditor";
-import { SearchCommunities } from "../../components/SearchCommunities";
+import { CreatePostEditor } from "../../components/CreatePostEditor/CreatePostEditor";
+import { SearchCommunities } from "../../components/SearchCommunities/SearchCommunities";
 
 export default function Submit(): JSX.Element {
   return (

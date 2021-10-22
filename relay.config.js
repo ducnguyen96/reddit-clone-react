@@ -8,7 +8,7 @@
  */
 module.exports = {
   src: ".",
-  schema: "schema.graphql",
+  schema: "./src/graphql/schema.graphql",
   language: require("relay-compiler-language-typescript"),
   watchman: false,
 };
