@@ -28,7 +28,7 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
-import { CommunityFragments } from "../components/SearchCommunities/CommunityList";
+import { CommunityFragment } from "../components/SearchCommunities/CommunityList";
 import { config } from "../core";
 import {
   useCommunityOnList,
@@ -153,8 +153,9 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
 
   const communities = useCommunityOnList();
 
-  const [filteredCommunities, setFilteredCommunities] =
-    React.useState<CommunityFragments>([]);
+  const [filteredCommunities, setFilteredCommunities] = React.useState<
+    ReadonlyArray<CommunityFragment>
+  >([]);
 
   React.useEffect(() => {
     if (communities && communities.communities) {

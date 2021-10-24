@@ -48,9 +48,7 @@ export default function Submit(props: submitQueryResponse): JSX.Element {
       mutation: createPostMutation,
       variables: { input },
       onCompleted: (res) => {
-        console.log("res :", res);
-        // location.href = "/";
-        location.reload();
+        location.href = "/";
       },
     });
   };
