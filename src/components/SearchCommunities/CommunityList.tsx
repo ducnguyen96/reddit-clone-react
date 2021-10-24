@@ -11,42 +11,24 @@ import { useEffect, useState } from "react";
 import { useCommunityOnList, useCreateCommunityDialog } from "../../hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
-type CommunityFragments = ReadonlyArray<{
+export type CommunityFragment = {
   readonly id: string;
   readonly name: string;
   readonly numberOfMember: number;
-}>;
+};
 
-export function CommunityList(props: any) {
+export type CommunityListProps = {
+  handleOnSelectCommunity: (c: CommunityFragment) => void;
+};
+
+export function CommunityList(props: CommunityListProps) {
   const theme = useTheme();
 
   const communities = useCommunityOnList();
 
-  // const [communities, setCommunities] = useState<CommunityOnList>({
-  //   " $refType": "CommunityOnList",
-  //   communities: [
-  //     {
-  //       id: "1",
-  //       name: "anime",
-  //       numberOfMember: 190000,
-  //     },
-  //     {
-  //       id: "2",
-  //       name: "piano",
-  //       numberOfMember: 210000,
-  //     },
-  //     {
-  //       id: "3",
-  //       name: "game",
-  //       numberOfMember: 123456,
-  //     },
-  //   ],
-  //   currentPage: 1,
-  //   length: 3,
-  // });
-
-  const [filteredCommunities, setFilteredCommunities] =
-    useState<CommunityFragments>([]);
+  const [filteredCommunities, setFilteredCommunities] = useState<
+    ReadonlyArray<CommunityFragment>
+  >([]);
 
   useEffect(() => {
     if (communities && communities.communities) {
@@ -115,10 +97,15 @@ export function CommunityList(props: any) {
         </Button>
       </Box>
       <Typography variant="h6"></Typography>
-      {filteredCommunities.map((value) => (
-        <MenuItem key={value.id}>
+      {filteredCommunities.map((community) => (
+        <MenuItem
+          key={community.id}
+          onClick={() => {
+            props.handleOnSelectCommunity(community);
+          }}
+        >
           <Avatar
-            {...{ children: value.name[2].toLowerCase() }}
+            {...{ children: community.name[2].toLowerCase() }}
             sx={{ marginLeft: "8px", width: "25px", height: "25px" }}
           />
           <Box>
@@ -126,14 +113,14 @@ export function CommunityList(props: any) {
               sx={{ marginLeft: "8px", fontWeight: "bold" }}
               variant="h5"
             >
-              {`r/${value.name}`}
+              {`r/${community.name}`}
             </Typography>
             <Typography
               // @ts-ignore
               sx={{ marginLeft: "8px", color: theme.palette.neutral.main }}
               variant="h6"
             >
-              {`${numberWithCommas(value.numberOfMember)} members`}
+              {`${numberWithCommas(community.numberOfMember)} members`}
             </Typography>
           </Box>
         </MenuItem>

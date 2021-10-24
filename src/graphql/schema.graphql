@@ -166,6 +166,9 @@ type Post {
 
   #
   owner: User!
+
+  #
+  numberOfComments: Int!
 }
 
 #

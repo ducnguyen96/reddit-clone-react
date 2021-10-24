@@ -18,22 +18,26 @@ import {
 } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { PostListFragment } from "../../routes/home/Home";
 import { stringAvatar } from "../../utils/stringAvatar";
 
 export type PostProps = {
   theme: Theme;
+  fragment: PostListFragment;
 };
 
-export const Post = (props: PostProps) => {
+export const Post = ({ theme, fragment }: PostProps) => {
   // @ts-ignore
-  const color = props.theme.palette.neutral.main;
+  const color = theme.palette.neutral.main;
   // @ts-ignore
-  const postColor = props.theme.palette.neutral["800"];
-  const md = `Hi. Sorry if it was mentioned before - was unable to find an answer. I'm just starting with Docker and find it fascinating. The below question is strictly for home lab experimentation but I always like to know how it should be done properly.
+  const postColor = theme.palette.neutral["800"];
 
-  Lets say I have 4 containers. 3 random services and a reverse proxy. I would like for the services to be able to talk to the proxy container but not to each other.
-  
-  Do I set up a separate network for all 3 of the service containers and join the reverse proxy container to those networks or is there more elegant solution that I'm missing? I know the 3 network solution would work but it seems like there would be a better solution or do I overthink things?`;
+  const diffInMinutes =
+    Math.abs(new Date().valueOf() - Date.parse(fragment.createdAt)) / 60000;
+  const created =
+    diffInMinutes >= 60
+      ? `${Math.floor(diffInMinutes / 60)} hours ago`
+      : `${Math.floor(diffInMinutes)} minutes ago`;
   return (
     <>
       <Paper sx={{ display: "flex", marginBottom: "10px" }}>
@@ -42,7 +46,7 @@ export const Post = (props: PostProps) => {
             <ArrowDropUp />
           </IconButton>
           <Typography variant="h4" textAlign={"center"} color={postColor}>
-            5
+            {fragment.upVotes - fragment.downVotes}
           </Typography>
           <IconButton aria-label="down" sx={{ color }}>
             <ArrowDropDown />
@@ -53,7 +57,7 @@ export const Post = (props: PostProps) => {
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton aria-label="community" color="primary">
               <Avatar
-                {...stringAvatar("R")}
+                {...stringAvatar(fragment.community.name[1])}
                 sx={{ width: "20px", height: "20px", fontSize: "small" }}
                 sizes="small"
               />
@@ -65,7 +69,7 @@ export const Post = (props: PostProps) => {
               sx={{ fontWeight: "bold" }}
               variant="h5"
             >
-              r/docker
+              {`r/${fragment.community.name}`}
             </Link>
             <Typography variant="h5" color={color}>
               . Posted by
@@ -77,20 +81,23 @@ export const Post = (props: PostProps) => {
               variant="h5"
               sx={{ marginLeft: "5px" }}
             >
-              u/ducnguyen96
+              {`u/${fragment.owner.username}`}
             </Link>
             <Typography variant="h5" marginLeft={"5px"} color={color}>
-              3 hours ago
+              {created}
             </Typography>
           </Box>
 
           {/* MIDDLE */}
           <Box sx={{ padding: "8px" }}>
             <Typography variant="h4" sx={{ fontWeight: "bold" }} color={color}>
-              Docker networks and container separation.
+              {fragment.title}
             </Typography>
             <Typography variant="body1" color={postColor}>
-              <ReactMarkdown children={md} remarkPlugins={[remarkGfm]} />
+              <ReactMarkdown
+                children={fragment.content}
+                remarkPlugins={[remarkGfm]}
+              />
             </Typography>
           </Box>
 
@@ -101,7 +108,7 @@ export const Post = (props: PostProps) => {
               startIcon={<ModeCommentOutlined />}
               sx={{ borderRadius: "20px", marginRight: "8px", color }}
             >
-              8 comments
+              {`${fragment.numberOfComments} comments`}
             </Button>
             <Button
               variant="text"

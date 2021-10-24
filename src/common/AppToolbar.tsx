@@ -28,8 +28,14 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
+import { CommunityFragments } from "../components/SearchCommunities/CommunityList";
 import { config } from "../core";
-import { useCurrentUser, useLoginDialog, useNavigate } from "../hooks";
+import {
+  useCommunityOnList,
+  useCurrentUser,
+  useLoginDialog,
+  useNavigate,
+} from "../hooks";
 import { useSignupDialog } from "../hooks/useSignupDialog";
 import { NotificationsMenu, UserMenu } from "../menu";
 
@@ -145,16 +151,16 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
     setCommunityMenuAnchorEl(null);
   };
 
-  const communities = [
-    "r/worldnews",
-    "r/UpliftingNews",
-    "r/nottheonion",
-    "r/technews",
-    "r/offbeat",
-  ];
+  const communities = useCommunityOnList();
 
   const [filteredCommunities, setFilteredCommunities] =
-    React.useState(communities);
+    React.useState<CommunityFragments>([]);
+
+  React.useEffect(() => {
+    if (communities && communities.communities) {
+      setFilteredCommunities(communities.communities);
+    }
+  }, [communities]);
 
   const [filterValue, setFilterValue] = React.useState("");
 
@@ -163,8 +169,8 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
     const value = e.target.value;
     setFilterValue(value);
     setFilteredCommunities(
-      communities.filter((c) =>
-        c.toLowerCase().startsWith(`r/${value}`.toLowerCase())
+      communities.communities.filter((c) =>
+        c.name.toLowerCase().startsWith(`${value}`.toLowerCase())
       )
     );
   };
@@ -245,7 +251,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
               //     maxHeight: "482px",
               //   },
               // }}
-              sx={{ top: "32px" }}
+              sx={{ top: "32px", maxHeight: "482px" }}
               PaperProps={{ elevation: 0, style: { borderRadius: 0 } }}
             >
               <OutlinedInput
@@ -259,6 +265,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                 }}
                 autoFocus
                 onChange={handleOnchangeFilter}
+                value={filterValue}
               />
               <Box
                 sx={{
@@ -270,14 +277,14 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                 MY COMMUNITIES
               </Box>
               <Typography variant="h6"></Typography>
-              {filteredCommunities.map((value, key) => (
-                <MenuItem key={key}>
+              {filteredCommunities.map((value) => (
+                <MenuItem key={value.id}>
                   <Avatar
-                    {...{ children: value[3] }}
+                    {...{ children: value.name[3] }}
                     sx={{ marginLeft: "8px", width: "25px", height: "25px" }}
                   />
                   <Typography sx={{ marginLeft: "8px" }} variant="h4">
-                    {value}
+                    {`r/${value.name}`}
                   </Typography>
                   <StarOutline sx={{ marginLeft: "auto" }} />
                 </MenuItem>

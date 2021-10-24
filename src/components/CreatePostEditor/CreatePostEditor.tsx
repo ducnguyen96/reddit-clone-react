@@ -5,14 +5,26 @@ import {
   PollOutlined,
   PostAddOutlined,
 } from "@mui/icons-material";
-import { Button, OutlinedInput, Paper, Typography } from "@mui/material";
+import { Box, Button, OutlinedInput, Paper, Typography } from "@mui/material";
 import { useState } from "react";
 import { MyEditor } from "../../editor/MyEditor";
+import { ValidatePostTitle } from "./Validate";
 
-export const CreatePostEditor = () => {
+export type CreatePostEditorProps = {
+  setPostContent: React.Dispatch<React.SetStateAction<string>>;
+  handleCreatePost: () => void;
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export const CreatePostEditor = ({
+  setPostContent,
+  handleCreatePost,
+  title,
+  setTitle,
+}: CreatePostEditorProps) => {
   const theme = useTheme();
   const [activeButton, setActiveButton] = useState("post");
-  const [title, setTitle] = useState("");
   const [titleLength, setTitleLength] = useState(0);
 
   const buttonColor = (buttonType: string) => {
@@ -39,6 +51,12 @@ export const CreatePostEditor = () => {
       setTitleLength(length);
     }
   };
+
+  const [onBlur, setOnBlur] = useState(false);
+  const handleOnBlurTitle = () => {
+    setOnBlur(true);
+  };
+
   return (
     <>
       <Paper>
@@ -126,7 +144,10 @@ export const CreatePostEditor = () => {
             }}
             value={title}
             onChange={handleOnChangeTitle}
+            onBlur={handleOnBlurTitle}
+            onFocus={() => setOnBlur(false)}
           />
+          {onBlur && <ValidatePostTitle />}
           <Typography
             sx={{
               position: "absolute",
@@ -139,7 +160,41 @@ export const CreatePostEditor = () => {
           >
             {`${titleLength}/300`}
           </Typography>
-          <MyEditor />
+
+          {/* MY EDITOR */}
+
+          <MyEditor setPostContent={setPostContent} />
+
+          {/* MY EDITOR */}
+          <Box
+            sx={{ display: "flex", justifyContent: "end", marginTop: "1rem" }}
+          >
+            <Button
+              onClick={() => {
+                location.href = "/";
+              }}
+              sx={{
+                // @ts-ignore
+                color: theme.palette.text.secondary,
+                // @ts-ignore
+                borderColor: theme.palette.text.secondary,
+              }}
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreatePost}
+              variant="contained"
+              sx={{
+                // @ts-ignore
+                backgroundColor: theme.palette.neutral.main,
+                marginLeft: "1rem",
+              }}
+            >
+              Create Community
+            </Button>
+          </Box>
         </Paper>
       </Paper>
     </>

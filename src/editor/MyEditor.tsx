@@ -10,25 +10,35 @@ import "react-markdown-editor-lite/lib/index.css";
 // MdEditor.use(YOUR_PLUGINS_HERE);
 
 // Initialize a markdown parser
-const mdParser = new MarkdownIt({ xhtmlOut: true, linkify: true });
+export const mdParser = new MarkdownIt({ xhtmlOut: true, linkify: true });
 
 // Finish!
 // function handleEditorChange({ html, text }) {
 //   console.log(html);
 // }
 
-export const MyEditor = (props) => {
+export type MyEditorProps = {
+  setPostContent: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export const MyEditor = (props: MyEditorProps) => {
   const theme = useTheme();
   // @ts-ignore
   const mode = theme.palette.mode;
   const bgColor = mode == "light" ? "#fff" : "#252526";
   const color = mode == "light" ? "black" : "#d7dadc";
+
+  function handleEditorChange({ html, text }) {
+    props.setPostContent(text);
+  }
+
   return (
     <>
       <Global
         styles={css`
           .rc-md-editor {
-            height: 500px;
+            height: 350px;
+            margin-top: 1rem;
             padding-bottom: 0px !important;
             border: 1px solid #969696 !important;
           }
@@ -51,7 +61,7 @@ export const MyEditor = (props) => {
       <MdEditor
         // style={{ height: "500px" }}
         renderHTML={(text) => mdParser.render(text)}
-        // onChange={handleEditorChange}
+        onChange={handleEditorChange}
       />
     </>
   );

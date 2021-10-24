@@ -49,3 +49,5 @@ yarn-error.log*
 .DS_Store
 
 sync.sh
+
+src/routes/test
