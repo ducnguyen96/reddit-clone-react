@@ -29,6 +29,8 @@ export type HomeQueryResponse = {
             readonly createdAt: string;
             readonly updatedAt: string;
             readonly numberOfComments: number;
+            readonly isUpVoted: boolean;
+            readonly isDownVoted: boolean;
             readonly community: {
                 readonly id: string;
                 readonly name: string;
@@ -69,6 +71,8 @@ query HomeQuery(
       createdAt
       updatedAt
       numberOfComments
+      isUpVoted
+      isDownVoted
       community {
         id
         name
@@ -212,6 +216,20 @@ v3 = [
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "isUpVoted",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isDownVoted",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Community",
             "kind": "LinkedField",
             "name": "community",
@@ -287,14 +305,14 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "800e802cdf5b80653e300d4929dc70d2",
+    "cacheID": "25ead979cb68d3fef2681b80b17f4ef7",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $input: QueryPostInput!\n) {\n  queryPost(input: $input) {\n    length\n    currentPage\n    posts {\n      id\n      title\n      slug\n      content\n      type\n      contentMode\n      upVotes\n      downVotes\n      createdAt\n      updatedAt\n      numberOfComments\n      community {\n        id\n        name\n        slug\n        numberOfMember\n      }\n      owner {\n        id\n        username\n        avatar\n      }\n    }\n  }\n}\n"
+    "text": "query HomeQuery(\n  $input: QueryPostInput!\n) {\n  queryPost(input: $input) {\n    length\n    currentPage\n    posts {\n      id\n      title\n      slug\n      content\n      type\n      contentMode\n      upVotes\n      downVotes\n      createdAt\n      updatedAt\n      numberOfComments\n      isUpVoted\n      isDownVoted\n      community {\n        id\n        name\n        slug\n        numberOfMember\n      }\n      owner {\n        id\n        username\n        avatar\n      }\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '2ac30b45e8c5fe8ded45b14c7dfc6d0c';
+(node as any).hash = '94ec1e8b038e16c6f06737f3e36b19c5';
 export default node;

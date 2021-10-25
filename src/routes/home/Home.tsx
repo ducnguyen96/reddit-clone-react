@@ -29,6 +29,8 @@ export type PostListFragment = {
   readonly createdAt: string;
   readonly updatedAt: string;
   readonly numberOfComments: number;
+  readonly isUpVoted: boolean;
+  readonly isDownVoted: boolean;
   readonly community: {
     readonly id: string;
     readonly name: string;
@@ -122,6 +124,8 @@ export const queryPost = graphql`
         createdAt
         updatedAt
         numberOfComments
+        isUpVoted
+        isDownVoted
         community {
           id
           name

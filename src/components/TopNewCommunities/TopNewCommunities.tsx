@@ -1,14 +1,5 @@
-import { ExpandLessOutlined } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  List,
-  ListItem,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, List, Paper } from "@mui/material";
+import { Item } from "./Item";
 
 export const TopNewCommunities = () => {
   const style = {
@@ -42,32 +33,15 @@ export const TopNewCommunities = () => {
           </h3>
         </Box>
         <List sx={style} component="nav" aria-label="top new communities">
-          {[
-            "r/worldnews",
-            "r/UpliftingNews",
-            "r/nottheonion",
-            "r/technews",
-            "r/offbeat",
-          ].map((value, key) => (
-            <>
-              <ListItem button key={key}>
-                <Typography sx={{ marginLeft: "10px" }} variant="h4">
-                  {key + 1}
-                </Typography>
-                <ExpandLessOutlined
-                  sx={{ marginLeft: "8px", color: "#46D160" }}
-                />
-                <Avatar
-                  {...{ children: value[3] }}
-                  sx={{ marginLeft: "8px", width: "35px", height: "35px" }}
-                />
-                <Typography sx={{ marginLeft: "8px" }} variant="h4">
-                  {value}
-                </Typography>
-              </ListItem>
-              {key != 4 && <Divider />}
-            </>
-          ))}
+          <Item index="1" value="r/worldnews" key={1} />
+          <Divider />
+          <Item index="2" value="r/UpliftingNews" key={2} />
+          <Divider />
+          <Item index="3" value="r/nottheonion" key={3} />
+          <Divider />
+          <Item index="4" value="r/technews" key={4} />
+          <Divider />
+          <Item index="5" value="r/offbeat" key={5} />
         </List>
         <Box sx={{ margin: "15px", paddingBottom: "15px" }}>
           <Button

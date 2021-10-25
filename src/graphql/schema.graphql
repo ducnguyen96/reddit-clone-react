@@ -127,6 +127,9 @@ type Mutation {
 
   #
   signOut: Boolean
+
+  #
+  userCreateAction(input: UserCreateActionInput!): UserAction!
 }
 
 #
@@ -169,6 +172,12 @@ type Post {
 
   #
   numberOfComments: Int!
+
+  #
+  isUpVoted: Boolean!
+
+  #
+  isDownVoted: Boolean!
 }
 
 #
@@ -292,6 +301,57 @@ type User {
 
   #
   updatedAt: String!
+}
+
+#
+type UserAction {
+  #
+  id: ID!
+
+  #
+  type: UserActionType!
+
+  #
+  target: ID!
+
+  #
+  targetType: UserActionTargetType!
+
+  #
+  createdAt: String!
+
+  #
+  updatedAt: String!
+}
+
+#
+enum UserActionTargetType {
+  #
+  POST
+
+  #
+  COMMENT
+}
+
+#
+enum UserActionType {
+  #
+  UpVote
+
+  #
+  DownVote
+}
+
+#
+input UserCreateActionInput {
+  #
+  type: UserActionType!
+
+  #
+  target: ID!
+
+  #
+  targetType: UserActionTargetType!
 }
 
 #
