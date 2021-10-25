@@ -105,7 +105,7 @@ export function CommunityList(props: CommunityListProps) {
           }}
         >
           <Avatar
-            {...{ children: community.name[2].toLowerCase() }}
+            {...{ children: community.name[0].toLowerCase() }}
             sx={{ marginLeft: "8px", width: "25px", height: "25px" }}
           />
           <Box>

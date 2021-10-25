@@ -95,7 +95,7 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
             }
           >
             {currentPosts.map((p) => (
-              <Post theme={theme} fragment={p} key={p.id} />
+              <Post theme={theme} fragment={p} key={p.id} userId={me?.id} />
             ))}
           </InfiniteScroll>
         </Box>

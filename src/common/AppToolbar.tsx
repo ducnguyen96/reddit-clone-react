@@ -281,7 +281,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
               {filteredCommunities.map((value) => (
                 <MenuItem key={value.id}>
                   <Avatar
-                    {...{ children: value.name[3] }}
+                    {...{ children: value.name[0] }}
                     sx={{ marginLeft: "8px", width: "25px", height: "25px" }}
                   />
                   <Typography sx={{ marginLeft: "8px" }} variant="h4">

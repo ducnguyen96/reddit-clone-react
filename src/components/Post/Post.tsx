@@ -22,6 +22,7 @@ import { useRelayEnvironment } from "react-relay";
 import { commitMutation, graphql } from "relay-runtime";
 import remarkGfm from "remark-gfm";
 import { DownVoteButton, UpVoteButton } from "../../common/StyledButtons";
+import { useLoginDialog } from "../../hooks";
 import { PostListFragment } from "../../routes/home/Home";
 import { stringAvatar } from "../../utils/stringAvatar";
 import {
@@ -32,9 +33,10 @@ import {
 export type PostProps = {
   theme: Theme;
   fragment: PostListFragment;
+  userId: string | undefined;
 };
 
-export const Post = ({ theme, fragment }: PostProps) => {
+export const Post = ({ theme, fragment, userId }: PostProps) => {
   const [voteStatus, setVoteStatus] = useState<{
     isUpVoted: boolean;
     isDownVoted: boolean;
@@ -64,46 +66,51 @@ export const Post = ({ theme, fragment }: PostProps) => {
       : `${Math.floor(diffInMinutes)} minutes ago`;
 
   const environment = useRelayEnvironment();
+  const loginDialog = useLoginDialog();
   const handleCreateAction = (actionType: UserActionType, id: string) => {
-    commitMutation<PostCreateActionMutation>(environment, {
-      mutation: createAction,
-      variables: {
-        input: {
-          target: id,
-          type: actionType,
-          targetType: "POST",
+    if (userId) {
+      commitMutation<PostCreateActionMutation>(environment, {
+        mutation: createAction,
+        variables: {
+          input: {
+            target: id,
+            type: actionType,
+            targetType: "POST",
+          },
         },
-      },
-      onCompleted: (res) => {
-        console.log("res :", res);
-        switch (res.userCreateAction.type) {
-          case "UpVote": {
-            const votes = voteStatus.isDownVoted
-              ? voteStatus.votes + 2
-              : voteStatus.votes + 1;
-            setVoteStatus({
-              isDownVoted: false,
-              isUpVoted: true,
-              votes,
-            });
-            break;
+        onCompleted: (res) => {
+          console.log("res :", res);
+          switch (res.userCreateAction.type) {
+            case "UpVote": {
+              const votes = voteStatus.isDownVoted
+                ? voteStatus.votes + 2
+                : voteStatus.votes + 1;
+              setVoteStatus({
+                isDownVoted: false,
+                isUpVoted: true,
+                votes,
+              });
+              break;
+            }
+            default: {
+              const votes = voteStatus.isUpVoted
+                ? voteStatus.votes - 2
+                : voteStatus.votes - 1;
+              setVoteStatus({
+                isDownVoted: true,
+                isUpVoted: false,
+                votes,
+              });
+            }
           }
-          default: {
-            const votes = voteStatus.isUpVoted
-              ? voteStatus.votes - 2
-              : voteStatus.votes - 1;
-            setVoteStatus({
-              isDownVoted: true,
-              isUpVoted: false,
-              votes,
-            });
-          }
-        }
-      } /* Mutation completed */,
-      onError: (error) => {
-        console.log("error :", error);
-      } /* Mutation errored */,
-    });
+        } /* Mutation completed */,
+        onError: (error) => {
+          console.log("error :", error);
+        } /* Mutation errored */,
+      });
+    } else {
+      loginDialog.show();
+    }
   };
 
   return (

@@ -192,7 +192,7 @@ export const CreatePostEditor = ({
                 marginLeft: "1rem",
               }}
             >
-              Create Community
+              Post
             </Button>
           </Box>
         </Paper>
