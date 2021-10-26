@@ -18,7 +18,7 @@ export const mdParser = new MarkdownIt({ xhtmlOut: true, linkify: true });
 // }
 
 export type MyEditorProps = {
-  setPostContent: React.Dispatch<React.SetStateAction<string>>;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const MyEditor = (props: MyEditorProps) => {
@@ -29,7 +29,7 @@ export const MyEditor = (props: MyEditorProps) => {
   const color = mode == "light" ? "black" : "#d7dadc";
 
   function handleEditorChange({ html, text }) {
-    props.setPostContent(text);
+    props.setContent(text);
   }
 
   return (
@@ -38,7 +38,7 @@ export const MyEditor = (props: MyEditorProps) => {
         styles={css`
           .rc-md-editor {
             height: 350px;
-            margin-top: 1rem;
+            margin: 1rem;
             padding-bottom: 0px !important;
             border: 1px solid #969696 !important;
           }

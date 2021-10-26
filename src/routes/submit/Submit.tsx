@@ -56,7 +56,7 @@ export default function Submit(props: submitQueryResponse): JSX.Element {
     <>
       <Box
         sx={{
-          margin: "40px 24px 24px",
+          margin: "88px 24px 24px",
           display: "flex",
           justifyContent: "center",
         }}

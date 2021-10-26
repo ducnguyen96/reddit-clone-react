@@ -163,7 +163,7 @@ export const CreatePostEditor = ({
 
           {/* MY EDITOR */}
 
-          <MyEditor setPostContent={setPostContent} />
+          <MyEditor setContent={setPostContent} />
 
           {/* MY EDITOR */}
           <Box

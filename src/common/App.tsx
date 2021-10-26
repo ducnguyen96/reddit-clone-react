@@ -7,7 +7,7 @@ import CreateCommunityDialog from "../components/CreateCommunity/CreateCommunity
 import { History, HistoryContext, LocationContext } from "../core/history";
 import type { RouteResponse } from "../core/router";
 import { resolveRoute } from "../core/router";
-import { LoginDialog } from "../dialogs";
+import { LoginDialog, ViewPostDialog } from "../dialogs";
 import { SignupDialog } from "../dialogs/SignupDialog";
 import theme from "../theme";
 import { AppToolbar } from "./AppToolbar";
@@ -98,6 +98,7 @@ export class App extends React.Component<AppProps> {
               <LoginDialog />
               <SignupDialog />
               <CreateCommunityDialog />
+              <ViewPostDialog />
             </LocationContext.Provider>
           </HistoryContext.Provider>
         </RelayEnvironmentProvider>

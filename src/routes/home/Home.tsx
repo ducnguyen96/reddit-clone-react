@@ -53,16 +53,15 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
   >(props.queryPost.posts);
 
   const [hasMore, setHasMore] = useState(true);
-  let page = 1;
+  const [currentPage, setCurrentPage] = useState(2);
 
   const environment = useRelayEnvironment();
   const fetchData = () => {
-    page = page + 1;
     // load data
     fetchQuery<HomeQuery>(environment, queryPost, {
       input: {
         limit: 10,
-        page,
+        page: currentPage,
       },
     })
       .toPromise()
@@ -72,13 +71,14 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
           setHasMore(false);
         }
         setCurrentPosts(currentPosts.concat(newPosts));
+        setCurrentPage(currentPage + 1);
       });
   };
 
   return (
     <>
       <Box
-        sx={{ margin: "20px 24px", display: "flex", justifyContent: "center" }}
+        sx={{ margin: "68px 24px", display: "flex", justifyContent: "center" }}
       >
         <Box sx={{ width: "640px" }}>
           {me && <CreatePostHome username={me.username} />}
@@ -95,7 +95,7 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
             }
           >
             {currentPosts.map((p) => (
-              <Post theme={theme} fragment={p} key={p.id} userId={me?.id} />
+              <Post theme={theme} fragment={p} key={p.id} />
             ))}
           </InfiniteScroll>
         </Box>

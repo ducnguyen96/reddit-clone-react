@@ -181,6 +181,8 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
       sx={{
         zIndex: (theme) => theme.zIndex.drawer + 1,
         ...sx,
+        position: "fixed",
+        top: "0",
       }}
       color="default"
       elevation={0}
@@ -207,7 +209,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
           >
             <Reddit sx={{ color: "white" }} />
           </IconButton>
-          <Typography sx={{ fontSize: "1.4rem", fontWeight: 500 }}>
+          <Typography sx={{ fontSize: "1.4rem", fontWeight: 500 }} variant="h5">
             <Link color="inherit" underline="none" href="/" onClick={navigate}>
               {config.app.name}
             </Link>

@@ -1,7 +1,5 @@
 import { Theme } from "@emotion/react";
 import {
-  ArrowDropDown,
-  ArrowDropUp,
   ModeCommentOutlined,
   RedeemOutlined,
   SaveAltOutlined,
@@ -22,7 +20,8 @@ import { useRelayEnvironment } from "react-relay";
 import { commitMutation, graphql } from "relay-runtime";
 import remarkGfm from "remark-gfm";
 import { DownVoteButton, UpVoteButton } from "../../common/StyledButtons";
-import { useLoginDialog } from "../../hooks";
+import { MyEditor } from "../../editor/MyEditor";
+import { useActivePost, useViewPostDialog } from "../../hooks";
 import { PostListFragment } from "../../routes/home/Home";
 import { stringAvatar } from "../../utils/stringAvatar";
 import {
@@ -32,11 +31,16 @@ import {
 
 export type PostProps = {
   theme: Theme;
-  fragment: PostListFragment;
-  userId: string | undefined;
+  fragment?: PostListFragment;
+  comment?: Boolean;
+  sx?: any;
 };
 
-export const Post = ({ theme, fragment, userId }: PostProps) => {
+export const Post = ({ theme, fragment, comment, sx }: PostProps) => {
+  if (!fragment) {
+    return <p>Hello</p>;
+  }
+
   const [voteStatus, setVoteStatus] = useState<{
     isUpVoted: boolean;
     isDownVoted: boolean;
@@ -66,56 +70,65 @@ export const Post = ({ theme, fragment, userId }: PostProps) => {
       : `${Math.floor(diffInMinutes)} minutes ago`;
 
   const environment = useRelayEnvironment();
-  const loginDialog = useLoginDialog();
   const handleCreateAction = (actionType: UserActionType, id: string) => {
-    if (userId) {
-      commitMutation<PostCreateActionMutation>(environment, {
-        mutation: createAction,
-        variables: {
-          input: {
-            target: id,
-            type: actionType,
-            targetType: "POST",
-          },
+    commitMutation<PostCreateActionMutation>(environment, {
+      mutation: createAction,
+      variables: {
+        input: {
+          target: id,
+          type: actionType,
+          targetType: "POST",
         },
-        onCompleted: (res) => {
-          console.log("res :", res);
-          switch (res.userCreateAction.type) {
-            case "UpVote": {
-              const votes = voteStatus.isDownVoted
-                ? voteStatus.votes + 2
-                : voteStatus.votes + 1;
-              setVoteStatus({
-                isDownVoted: false,
-                isUpVoted: true,
-                votes,
-              });
-              break;
-            }
-            default: {
-              const votes = voteStatus.isUpVoted
-                ? voteStatus.votes - 2
-                : voteStatus.votes - 1;
-              setVoteStatus({
-                isDownVoted: true,
-                isUpVoted: false,
-                votes,
-              });
-            }
+      },
+      onCompleted: (res) => {
+        console.log("res :", res);
+        switch (res.userCreateAction.type) {
+          case "UpVote": {
+            const votes = voteStatus.isDownVoted
+              ? voteStatus.votes + 2
+              : voteStatus.votes + 1;
+            setVoteStatus({
+              isDownVoted: false,
+              isUpVoted: true,
+              votes,
+            });
+            break;
           }
-        } /* Mutation completed */,
-        onError: (error) => {
-          console.log("error :", error);
-        } /* Mutation errored */,
-      });
-    } else {
-      loginDialog.show();
-    }
+          default: {
+            const votes = voteStatus.isUpVoted
+              ? voteStatus.votes - 2
+              : voteStatus.votes - 1;
+            setVoteStatus({
+              isDownVoted: true,
+              isUpVoted: false,
+              votes,
+            });
+          }
+        }
+      } /* Mutation completed */,
+      onError: (error) => {
+        console.log("error :", error);
+      } /* Mutation errored */,
+    });
   };
 
+  // const history = useHistory();
+  const viewPostDialog = useViewPostDialog();
+  const activePost = useActivePost();
+  const handleClickViewPost = () => {
+    activePost.setSlug(fragment.slug);
+    viewPostDialog.show();
+  };
+
+  const [commentContent, setCommentContent] = useState("");
+
+  const handleCreateComment = () => {};
   return (
     <>
-      <Paper sx={{ display: "flex", marginBottom: "10px" }}>
+      <Paper
+        sx={{ display: "flex", marginBottom: "10px", ...sx }}
+        elevation={0}
+      >
         <Box sx={{ width: "40px" }}>
           <UpVoteButton
             color={color}
@@ -172,7 +185,10 @@ export const Post = ({ theme, fragment, userId }: PostProps) => {
           </Box>
 
           {/* MIDDLE */}
-          <Box sx={{ padding: "8px" }}>
+          <Box
+            sx={{ padding: "8px", ":hover": { cursor: "pointer" } }}
+            onClick={handleClickViewPost}
+          >
             <Typography variant="h4" sx={{ fontWeight: "bold" }} color={color}>
               {fragment.title}
             </Typography>
@@ -216,6 +232,28 @@ export const Post = ({ theme, fragment, userId }: PostProps) => {
               Save
             </Button>
           </Box>
+
+          {/* Comments Section */}
+          {comment && (
+            <>
+              <Box>
+                <MyEditor setContent={setCommentContent} />
+                <Button
+                  onClick={handleCreateComment}
+                  variant="contained"
+                  sx={{
+                    // @ts-ignore
+                    backgroundColor: theme.palette.neutral.main,
+                    float: "right",
+                    margin: "1rem",
+                    marginTop: 0,
+                  }}
+                >
+                  comment
+                </Button>
+              </Box>
+            </>
+          )}
         </Box>
       </Paper>
     </>
