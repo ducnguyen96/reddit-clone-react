@@ -23,7 +23,12 @@ import { DownVoteButton, UpVoteButton } from "../../common/StyledButtons";
 import { MyEditor } from "../../editor/MyEditor";
 import { useActivePost, useViewPostDialog } from "../../hooks";
 import { PostListFragment } from "../../routes/home/Home";
+import { getCreatedAt } from "../../utils/createdAt";
 import { stringAvatar } from "../../utils/stringAvatar";
+import {
+  CreateCommentInput,
+  PostCommentMutation,
+} from "./__generated__/PostCommentMutation.graphql";
 import {
   PostCreateActionMutation,
   UserActionType,
@@ -34,9 +39,16 @@ export type PostProps = {
   fragment?: PostListFragment;
   comment?: Boolean;
   sx?: any;
+  handleUpdateCommentList?: () => void;
 };
 
-export const Post = ({ theme, fragment, comment, sx }: PostProps) => {
+export const Post = ({
+  theme,
+  fragment,
+  comment,
+  sx,
+  handleUpdateCommentList,
+}: PostProps) => {
   if (!fragment) {
     return <p>Hello</p>;
   }
@@ -62,13 +74,6 @@ export const Post = ({ theme, fragment, comment, sx }: PostProps) => {
     ? "#7193FF"
     : postColor;
 
-  const diffInMinutes =
-    Math.abs(new Date().valueOf() - Date.parse(fragment.createdAt)) / 60000;
-  const created =
-    diffInMinutes >= 60
-      ? `${Math.floor(diffInMinutes / 60)} hours ago`
-      : `${Math.floor(diffInMinutes)} minutes ago`;
-
   const environment = useRelayEnvironment();
   const handleCreateAction = (actionType: UserActionType, id: string) => {
     commitMutation<PostCreateActionMutation>(environment, {
@@ -81,7 +86,6 @@ export const Post = ({ theme, fragment, comment, sx }: PostProps) => {
         },
       },
       onCompleted: (res) => {
-        console.log("res :", res);
         switch (res.userCreateAction.type) {
           case "UpVote": {
             const votes = voteStatus.isDownVoted
@@ -122,7 +126,25 @@ export const Post = ({ theme, fragment, comment, sx }: PostProps) => {
 
   const [commentContent, setCommentContent] = useState("");
 
-  const handleCreateComment = () => {};
+  const handleCreateComment = () => {
+    const input: CreateCommentInput = {
+      content: commentContent,
+      contentMode: "MarkDown",
+      postID: fragment.id,
+    };
+
+    // submit mutation
+    return commitMutation<PostCommentMutation>(environment, {
+      mutation: commentMutation,
+      variables: { input },
+      onCompleted: (res) => {
+        console.log("res :", res);
+        if (!!handleUpdateCommentList) {
+          handleUpdateCommentList();
+        }
+      },
+    });
+  };
   return (
     <>
       <Paper
@@ -180,7 +202,7 @@ export const Post = ({ theme, fragment, comment, sx }: PostProps) => {
               {`u/${fragment.owner.username}`}
             </Link>
             <Typography variant="h5" marginLeft={"5px"} color={color}>
-              {created}
+              {getCreatedAt(fragment.createdAt)}
             </Typography>
           </Box>
 
@@ -237,7 +259,7 @@ export const Post = ({ theme, fragment, comment, sx }: PostProps) => {
           {comment && (
             <>
               <Box>
-                <MyEditor setContent={setCommentContent} />
+                <MyEditor setContent={setCommentContent} height={100} />
                 <Button
                   onClick={handleCreateComment}
                   variant="contained"
@@ -269,6 +291,28 @@ const createAction = graphql`
       targetType
       createdAt
       updatedAt
+    }
+  }
+`;
+
+export const commentMutation = graphql`
+  mutation PostCommentMutation($input: CreateCommentInput!) {
+    createComment(input: $input) {
+      id
+      postID
+      content
+      contentMode
+      createdAt
+      updatedAt
+      upVotes
+      downVotes
+      owner {
+        id
+        username
+        avatar
+      }
+      isUpVoted
+      isDownVoted
     }
   }
 `;

@@ -9,3 +9,9 @@ export type {
   CommunityOnList$key,
   CommunityOnList$data,
 } from "./__generated__/CommunityOnList.graphql";
+
+export { CommentFragment } from "./Comment";
+export type {
+  CommentFragment$key,
+  CommentFragment$data,
+} from "./__generated__/CommentFragment.graphql";

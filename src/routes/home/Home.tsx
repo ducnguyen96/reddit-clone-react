@@ -63,16 +63,16 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
         limit: 10,
         page: currentPage,
       },
-    })
-      .toPromise()
-      .then((res) => {
+    }).subscribe({
+      next: (res) => {
         const newPosts = res?.queryPost.posts || [];
         if (newPosts.length < 10) {
           setHasMore(false);
         }
         setCurrentPosts(currentPosts.concat(newPosts));
         setCurrentPage(currentPage + 1);
-      });
+      },
+    });
   };
 
   return (

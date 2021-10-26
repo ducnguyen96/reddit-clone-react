@@ -153,18 +153,15 @@ export function LoginDialog(): JSX.Element {
               align="left"
               children={
                 <>
-                  <p>
-                    By continuing, you agree to our{" "}
-                    <Link href="#" underline="none">
-                      User Agreement
-                    </Link>{" "}
-                    and{" "}
-                    <Link href="#" underline="none">
-                      {" "}
-                      Privacy Policy
-                    </Link>
-                    .
-                  </p>
+                  By continuing, you agree to our{" "}
+                  <Link href="#" underline="none">
+                    User Agreement
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="#" underline="none">
+                    {" "}
+                    Privacy Policy.
+                  </Link>
                 </>
               }
             />
@@ -255,17 +252,15 @@ export function LoginDialog(): JSX.Element {
               align="left"
               children={
                 <>
-                  <p>
-                    Forgot your{" "}
-                    <Link href="#" underline="none">
-                      username
-                    </Link>{" "}
-                    or{" "}
-                    <Link href="#" underline="none">
-                      password
-                    </Link>{" "}
-                    ?
-                  </p>
+                  Forgot your{" "}
+                  <Link href="#" underline="none">
+                    username
+                  </Link>{" "}
+                  or{" "}
+                  <Link href="#" underline="none">
+                    password
+                  </Link>
+                  {"  ?"}
                 </>
               }
             />
@@ -275,17 +270,15 @@ export function LoginDialog(): JSX.Element {
               sx={{ marginTop: "2rem", marginBottom: "3rem" }}
               children={
                 <>
-                  <p>
-                    New to Reddit?{" "}
-                    <Link
-                      href="#"
-                      underline="none"
-                      sx={{ fontWeight: "bold" }}
-                      onClick={handleClickSignup}
-                    >
-                      SIGN UP
-                    </Link>{" "}
-                  </p>
+                  New to Reddit?{" "}
+                  <Link
+                    href="#"
+                    underline="none"
+                    sx={{ fontWeight: "bold" }}
+                    onClick={handleClickSignup}
+                  >
+                    SIGN UP
+                  </Link>{" "}
                 </>
               }
             />

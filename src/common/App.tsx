@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
-import { CssBaseline, PaletteMode, Toolbar } from "@mui/material";
+import { CssBaseline, PaletteMode } from "@mui/material";
 import { Action, Update } from "history";
 import * as React from "react";
 import { Environment, RelayEnvironmentProvider } from "react-relay";

@@ -4,6 +4,57 @@ directive @binding(
 ) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
 
 #
+type Comment {
+  #
+  id: ID!
+
+  #
+  postID: ID!
+
+  #
+  content: String!
+
+  #
+  contentMode: InputContentMode!
+
+  #
+  createdAt: String!
+
+  #
+  updatedAt: String!
+
+  #
+  upVotes: Int!
+
+  #
+  downVotes: Int!
+
+  #
+  owner: User!
+
+  #
+  isUpVoted: Boolean!
+
+  #
+  isDownVoted: Boolean!
+
+  #
+  replies: [Comment!]!
+}
+
+#
+type CommentPagination {
+  #
+  length: Int!
+
+  #
+  currentPage: Int!
+
+  #
+  comments: [Comment!]!
+}
+
+#
 type Community {
   #
   id: ID!
@@ -52,6 +103,21 @@ enum CommunityType {
 
   #
   Private
+}
+
+#
+input CreateCommentInput {
+  #
+  postID: ID!
+
+  #
+  parentID: ID
+
+  #
+  content: String!
+
+  #
+  contentMode: InputContentMode!
 }
 
 #
@@ -113,6 +179,9 @@ enum InputContentMode {
 
 #
 type Mutation {
+  #
+  createComment(input: CreateCommentInput!): Comment!
+
   #
   createCommunity(input: CreateCommunityInput!): Community!
 
@@ -207,6 +276,9 @@ enum PostType {
 #
 type Query {
   #
+  queryComment(input: QueryCommentInput!): CommentPagination!
+
+  #
   getCommunity(slug: String!): Community!
 
   #
@@ -223,6 +295,21 @@ type Query {
 
   #
   me: User
+}
+
+#
+input QueryCommentInput {
+  #
+  postID: ID!
+
+  #
+  parentID: ID
+
+  #
+  limit: Int
+
+  #
+  page: Int
 }
 
 #

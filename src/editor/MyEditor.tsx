@@ -19,6 +19,7 @@ export const mdParser = new MarkdownIt({ xhtmlOut: true, linkify: true });
 
 export type MyEditorProps = {
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  height?: number;
 };
 
 export const MyEditor = (props: MyEditorProps) => {
@@ -37,7 +38,7 @@ export const MyEditor = (props: MyEditorProps) => {
       <Global
         styles={css`
           .rc-md-editor {
-            height: 350px;
+            height: ${props.height ? props.height : 350}px;
             margin: 1rem;
             padding-bottom: 0px !important;
             border: 1px solid #969696 !important;
