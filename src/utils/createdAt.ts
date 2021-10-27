@@ -1,8 +1,10 @@
 export const getCreatedAt = (createdAt: string): string => {
-  const diffInMinutes =
-    Math.abs(new Date().valueOf() - Date.parse(createdAt)) / 60000;
-  const diffInDate = Math.abs(
-    new Date().getDate() - new Date(createdAt).getDate()
+  const diffInSeconds = Math.floor(
+    Math.abs(new Date().valueOf() - Date.parse(createdAt)) / 1000
+  );
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInDate = Math.floor(
+    Math.abs(new Date().getDate() - new Date(createdAt).getDate())
   );
   let created;
   switch (true) {
@@ -18,9 +20,14 @@ export const getCreatedAt = (createdAt: string): string => {
     case diffInMinutes >= 60:
       created = `${Math.floor(diffInMinutes / 60)} hours ago`;
       break;
-    default:
+    case diffInMinutes > 0:
       created = `${Math.floor(diffInMinutes)} minutes ago`;
       break;
+    case diffInSeconds > 0:
+      created = `${Math.floor(diffInSeconds)} seconds ago`;
+      break;
+    default:
+      created = `0 second ago`;
   }
   return created;
 };

@@ -32,7 +32,10 @@ export type CommentProps = {
   theme: Theme;
   main: CommentWithFragment;
   sx?: any;
-  handleUpdateCommentList?: () => void;
+  handleUpdateCommentList?: (
+    newComment: CommentWithFragment,
+    parent: Boolean
+  ) => void;
 };
 export const Comment = ({
   theme,
@@ -61,10 +64,15 @@ export const Comment = ({
       mutation: commentMutation,
       variables: { input },
       onCompleted: (res) => {
-        console.log("res :", res);
         setEditor(false);
         if (!!handleUpdateCommentList) {
-          handleUpdateCommentList();
+          const fragment: CommentWithFragment = {
+            ...res.createComment,
+            oldestParentID: main.oldestParentID,
+            " $refType": "CommentFragment",
+            replies: [],
+          };
+          handleUpdateCommentList(fragment, true);
         }
       },
     });

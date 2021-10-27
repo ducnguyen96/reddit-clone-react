@@ -20,6 +20,7 @@ import { useRelayEnvironment } from "react-relay";
 import { commitMutation, graphql } from "relay-runtime";
 import remarkGfm from "remark-gfm";
 import { DownVoteButton, UpVoteButton } from "../../common/StyledButtons";
+import { CommentWithFragment } from "../../dialogs/ViewPostDialog";
 import { MyEditor } from "../../editor/MyEditor";
 import { useActivePost, useViewPostDialog } from "../../hooks";
 import { PostListFragment } from "../../routes/home/Home";
@@ -39,7 +40,10 @@ export type PostProps = {
   fragment?: PostListFragment;
   comment?: Boolean;
   sx?: any;
-  handleUpdateCommentList?: () => void;
+  handleUpdateCommentList?: (
+    newComment: CommentWithFragment,
+    parent: Boolean
+  ) => void;
 };
 
 export const Post = ({
@@ -140,7 +144,13 @@ export const Post = ({
       onCompleted: (res) => {
         console.log("res :", res);
         if (!!handleUpdateCommentList) {
-          handleUpdateCommentList();
+          const fragment: CommentWithFragment = {
+            ...res.createComment,
+            " $refType": "CommentFragment",
+            oldestParentID: res.createComment.id,
+            replies: [],
+          };
+          handleUpdateCommentList(fragment, false);
         }
       },
     });
@@ -175,7 +185,7 @@ export const Post = ({
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton aria-label="community" color="primary">
               <Avatar
-                {...stringAvatar(fragment.community.name[1])}
+                {...stringAvatar(fragment.community.name[0])}
                 sx={{ width: "20px", height: "20px", fontSize: "small" }}
                 sizes="small"
               />

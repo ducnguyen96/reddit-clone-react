@@ -279,6 +279,9 @@ type Query {
   queryComment(input: QueryCommentInput!): CommentPagination!
 
   #
+  getComment(id: ID!): Comment!
+
+  #
   getCommunity(slug: String!): Community!
 
   #

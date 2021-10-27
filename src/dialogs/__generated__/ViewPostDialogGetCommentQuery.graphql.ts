@@ -5,20 +5,12 @@
 import { ConcreteRequest } from "relay-runtime";
 
 import { FragmentRefs } from "relay-runtime";
-export type QueryCommentInput = {
-    postID: string;
-    parentID?: string | null;
-    limit?: number | null;
-    page?: number | null;
+export type ViewPostDialogGetCommentQueryVariables = {
+    id: string;
 };
-export type ViewPostDialogCommentQueryVariables = {
-    input: QueryCommentInput;
-};
-export type ViewPostDialogCommentQueryResponse = {
-    readonly queryComment: {
-        readonly length: number;
-        readonly currentPage: number;
-        readonly comments: ReadonlyArray<{
+export type ViewPostDialogGetCommentQueryResponse = {
+    readonly getComment: {
+        readonly replies: ReadonlyArray<{
             readonly replies: ReadonlyArray<{
                 readonly replies: ReadonlyArray<{
                     readonly replies: ReadonlyArray<{
@@ -34,9 +26,6 @@ export type ViewPostDialogCommentQueryResponse = {
                                                             readonly replies: ReadonlyArray<{
                                                                 readonly replies: ReadonlyArray<{
                                                                     readonly replies: ReadonlyArray<{
-                                                                        readonly replies: ReadonlyArray<{
-                                                                            readonly " $fragmentRefs": FragmentRefs<"CommentFragment">;
-                                                                        }>;
                                                                         readonly " $fragmentRefs": FragmentRefs<"CommentFragment">;
                                                                     }>;
                                                                     readonly " $fragmentRefs": FragmentRefs<"CommentFragment">;
@@ -69,23 +58,23 @@ export type ViewPostDialogCommentQueryResponse = {
             }>;
             readonly " $fragmentRefs": FragmentRefs<"CommentFragment">;
         }>;
+        readonly " $fragmentRefs": FragmentRefs<"CommentFragment">;
     };
 };
-export type ViewPostDialogCommentQuery = {
-    readonly response: ViewPostDialogCommentQueryResponse;
-    readonly variables: ViewPostDialogCommentQueryVariables;
+export type ViewPostDialogGetCommentQuery = {
+    readonly response: ViewPostDialogGetCommentQueryResponse;
+    readonly variables: ViewPostDialogGetCommentQueryVariables;
 };
 
 
 
 /*
-query ViewPostDialogCommentQuery(
-  $input: QueryCommentInput!
+query ViewPostDialogGetCommentQuery(
+  $id: ID!
 ) {
-  queryComment(input: $input) {
-    length
-    currentPage
-    comments {
+  getComment(id: $id) {
+    ...CommentFragment
+    replies {
       ...CommentFragment
       replies {
         ...CommentFragment
@@ -117,10 +106,6 @@ query ViewPostDialogCommentQuery(
                                   ...CommentFragment
                                   replies {
                                     ...CommentFragment
-                                    replies {
-                                      ...CommentFragment
-                                      id
-                                    }
                                     id
                                   }
                                   id
@@ -153,6 +138,7 @@ query ViewPostDialogCommentQuery(
       }
       id
     }
+    id
   }
 }
 
@@ -180,87 +166,73 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "input"
+    "name": "id"
   }
 ],
 v1 = [
   {
     "kind": "Variable",
-    "name": "input",
-    "variableName": "input"
+    "name": "id",
+    "variableName": "id"
   }
 ],
 v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "length",
+  "name": "id",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "currentPage",
+  "name": "postID",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "content",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "postID",
+  "name": "contentMode",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "content",
+  "name": "createdAt",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "contentMode",
+  "name": "updatedAt",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "createdAt",
+  "name": "upVotes",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "updatedAt",
-  "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "upVotes",
-  "storageKey": null
-},
-v11 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "downVotes",
   "storageKey": null
 },
-v12 = {
+v10 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
@@ -268,7 +240,7 @@ v12 = {
   "name": "owner",
   "plural": false,
   "selections": [
-    (v4/*: any*/),
+    (v2/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -286,21 +258,23 @@ v12 = {
   ],
   "storageKey": null
 },
-v13 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "isUpVoted",
   "storageKey": null
 },
-v14 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "isDownVoted",
   "storageKey": null
 },
-v15 = [
+v13 = [
+  (v2/*: any*/),
+  (v3/*: any*/),
   (v4/*: any*/),
   (v5/*: any*/),
   (v6/*: any*/),
@@ -309,38 +283,34 @@ v15 = [
   (v9/*: any*/),
   (v10/*: any*/),
   (v11/*: any*/),
-  (v12/*: any*/),
-  (v13/*: any*/),
-  (v14/*: any*/)
+  (v12/*: any*/)
 ],
-v16 = {
+v14 = {
   "kind": "InlineDataFragmentSpread",
   "name": "CommentFragment",
-  "selections": (v15/*: any*/)
+  "selections": (v13/*: any*/)
 };
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ViewPostDialogCommentQuery",
+    "name": "ViewPostDialogGetCommentQuery",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "CommentPagination",
+        "concreteType": "Comment",
         "kind": "LinkedField",
-        "name": "queryComment",
+        "name": "getComment",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
             "concreteType": "Comment",
             "kind": "LinkedField",
-            "name": "comments",
+            "name": "replies",
             "plural": true,
             "selections": [
               {
@@ -463,82 +433,71 @@ return {
                                                                         "name": "replies",
                                                                         "plural": true,
                                                                         "selections": [
-                                                                          {
-                                                                            "alias": null,
-                                                                            "args": null,
-                                                                            "concreteType": "Comment",
-                                                                            "kind": "LinkedField",
-                                                                            "name": "replies",
-                                                                            "plural": true,
-                                                                            "selections": [
-                                                                              (v16/*: any*/)
-                                                                            ],
-                                                                            "storageKey": null
-                                                                          },
-                                                                          (v16/*: any*/)
+                                                                          (v14/*: any*/)
                                                                         ],
                                                                         "storageKey": null
                                                                       },
-                                                                      (v16/*: any*/)
+                                                                      (v14/*: any*/)
                                                                     ],
                                                                     "storageKey": null
                                                                   },
-                                                                  (v16/*: any*/)
+                                                                  (v14/*: any*/)
                                                                 ],
                                                                 "storageKey": null
                                                               },
-                                                              (v16/*: any*/)
+                                                              (v14/*: any*/)
                                                             ],
                                                             "storageKey": null
                                                           },
-                                                          (v16/*: any*/)
+                                                          (v14/*: any*/)
                                                         ],
                                                         "storageKey": null
                                                       },
-                                                      (v16/*: any*/)
+                                                      (v14/*: any*/)
                                                     ],
                                                     "storageKey": null
                                                   },
-                                                  (v16/*: any*/)
+                                                  (v14/*: any*/)
                                                 ],
                                                 "storageKey": null
                                               },
-                                              (v16/*: any*/)
+                                              (v14/*: any*/)
                                             ],
                                             "storageKey": null
                                           },
-                                          (v16/*: any*/)
+                                          (v14/*: any*/)
                                         ],
                                         "storageKey": null
                                       },
-                                      (v16/*: any*/)
+                                      (v14/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
-                                  (v16/*: any*/)
+                                  (v14/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v16/*: any*/)
+                              (v14/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v16/*: any*/)
+                          (v14/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v16/*: any*/)
+                      (v14/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v16/*: any*/)
+                  (v14/*: any*/)
                 ],
                 "storageKey": null
               },
-              (v16/*: any*/)
+              (v14/*: any*/)
             ],
             "storageKey": null
-          }
+          },
+          (v14/*: any*/)
         ],
         "storageKey": null
       }
@@ -550,26 +509,37 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ViewPostDialogCommentQuery",
+    "name": "ViewPostDialogGetCommentQuery",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "CommentPagination",
+        "concreteType": "Comment",
         "kind": "LinkedField",
-        "name": "queryComment",
+        "name": "getComment",
         "plural": false,
         "selections": [
           (v2/*: any*/),
           (v3/*: any*/),
+          (v4/*: any*/),
+          (v5/*: any*/),
+          (v6/*: any*/),
+          (v7/*: any*/),
+          (v8/*: any*/),
+          (v9/*: any*/),
+          (v10/*: any*/),
+          (v11/*: any*/),
+          (v12/*: any*/),
           {
             "alias": null,
             "args": null,
             "concreteType": "Comment",
             "kind": "LinkedField",
-            "name": "comments",
+            "name": "replies",
             "plural": true,
             "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
@@ -579,8 +549,6 @@ return {
               (v10/*: any*/),
               (v11/*: any*/),
               (v12/*: any*/),
-              (v13/*: any*/),
-              (v14/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -589,6 +557,8 @@ return {
                 "name": "replies",
                 "plural": true,
                 "selections": [
+                  (v2/*: any*/),
+                  (v3/*: any*/),
                   (v4/*: any*/),
                   (v5/*: any*/),
                   (v6/*: any*/),
@@ -598,8 +568,6 @@ return {
                   (v10/*: any*/),
                   (v11/*: any*/),
                   (v12/*: any*/),
-                  (v13/*: any*/),
-                  (v14/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -608,6 +576,8 @@ return {
                     "name": "replies",
                     "plural": true,
                     "selections": [
+                      (v2/*: any*/),
+                      (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v6/*: any*/),
@@ -617,8 +587,6 @@ return {
                       (v10/*: any*/),
                       (v11/*: any*/),
                       (v12/*: any*/),
-                      (v13/*: any*/),
-                      (v14/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -627,6 +595,8 @@ return {
                         "name": "replies",
                         "plural": true,
                         "selections": [
+                          (v2/*: any*/),
+                          (v3/*: any*/),
                           (v4/*: any*/),
                           (v5/*: any*/),
                           (v6/*: any*/),
@@ -636,8 +606,6 @@ return {
                           (v10/*: any*/),
                           (v11/*: any*/),
                           (v12/*: any*/),
-                          (v13/*: any*/),
-                          (v14/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -646,6 +614,8 @@ return {
                             "name": "replies",
                             "plural": true,
                             "selections": [
+                              (v2/*: any*/),
+                              (v3/*: any*/),
                               (v4/*: any*/),
                               (v5/*: any*/),
                               (v6/*: any*/),
@@ -655,8 +625,6 @@ return {
                               (v10/*: any*/),
                               (v11/*: any*/),
                               (v12/*: any*/),
-                              (v13/*: any*/),
-                              (v14/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -665,6 +633,8 @@ return {
                                 "name": "replies",
                                 "plural": true,
                                 "selections": [
+                                  (v2/*: any*/),
+                                  (v3/*: any*/),
                                   (v4/*: any*/),
                                   (v5/*: any*/),
                                   (v6/*: any*/),
@@ -674,8 +644,6 @@ return {
                                   (v10/*: any*/),
                                   (v11/*: any*/),
                                   (v12/*: any*/),
-                                  (v13/*: any*/),
-                                  (v14/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -684,6 +652,8 @@ return {
                                     "name": "replies",
                                     "plural": true,
                                     "selections": [
+                                      (v2/*: any*/),
+                                      (v3/*: any*/),
                                       (v4/*: any*/),
                                       (v5/*: any*/),
                                       (v6/*: any*/),
@@ -693,8 +663,6 @@ return {
                                       (v10/*: any*/),
                                       (v11/*: any*/),
                                       (v12/*: any*/),
-                                      (v13/*: any*/),
-                                      (v14/*: any*/),
                                       {
                                         "alias": null,
                                         "args": null,
@@ -703,6 +671,8 @@ return {
                                         "name": "replies",
                                         "plural": true,
                                         "selections": [
+                                          (v2/*: any*/),
+                                          (v3/*: any*/),
                                           (v4/*: any*/),
                                           (v5/*: any*/),
                                           (v6/*: any*/),
@@ -712,8 +682,6 @@ return {
                                           (v10/*: any*/),
                                           (v11/*: any*/),
                                           (v12/*: any*/),
-                                          (v13/*: any*/),
-                                          (v14/*: any*/),
                                           {
                                             "alias": null,
                                             "args": null,
@@ -722,6 +690,8 @@ return {
                                             "name": "replies",
                                             "plural": true,
                                             "selections": [
+                                              (v2/*: any*/),
+                                              (v3/*: any*/),
                                               (v4/*: any*/),
                                               (v5/*: any*/),
                                               (v6/*: any*/),
@@ -731,8 +701,6 @@ return {
                                               (v10/*: any*/),
                                               (v11/*: any*/),
                                               (v12/*: any*/),
-                                              (v13/*: any*/),
-                                              (v14/*: any*/),
                                               {
                                                 "alias": null,
                                                 "args": null,
@@ -741,6 +709,8 @@ return {
                                                 "name": "replies",
                                                 "plural": true,
                                                 "selections": [
+                                                  (v2/*: any*/),
+                                                  (v3/*: any*/),
                                                   (v4/*: any*/),
                                                   (v5/*: any*/),
                                                   (v6/*: any*/),
@@ -750,8 +720,6 @@ return {
                                                   (v10/*: any*/),
                                                   (v11/*: any*/),
                                                   (v12/*: any*/),
-                                                  (v13/*: any*/),
-                                                  (v14/*: any*/),
                                                   {
                                                     "alias": null,
                                                     "args": null,
@@ -760,6 +728,8 @@ return {
                                                     "name": "replies",
                                                     "plural": true,
                                                     "selections": [
+                                                      (v2/*: any*/),
+                                                      (v3/*: any*/),
                                                       (v4/*: any*/),
                                                       (v5/*: any*/),
                                                       (v6/*: any*/),
@@ -769,8 +739,6 @@ return {
                                                       (v10/*: any*/),
                                                       (v11/*: any*/),
                                                       (v12/*: any*/),
-                                                      (v13/*: any*/),
-                                                      (v14/*: any*/),
                                                       {
                                                         "alias": null,
                                                         "args": null,
@@ -779,6 +747,8 @@ return {
                                                         "name": "replies",
                                                         "plural": true,
                                                         "selections": [
+                                                          (v2/*: any*/),
+                                                          (v3/*: any*/),
                                                           (v4/*: any*/),
                                                           (v5/*: any*/),
                                                           (v6/*: any*/),
@@ -788,8 +758,6 @@ return {
                                                           (v10/*: any*/),
                                                           (v11/*: any*/),
                                                           (v12/*: any*/),
-                                                          (v13/*: any*/),
-                                                          (v14/*: any*/),
                                                           {
                                                             "alias": null,
                                                             "args": null,
@@ -798,6 +766,8 @@ return {
                                                             "name": "replies",
                                                             "plural": true,
                                                             "selections": [
+                                                              (v2/*: any*/),
+                                                              (v3/*: any*/),
                                                               (v4/*: any*/),
                                                               (v5/*: any*/),
                                                               (v6/*: any*/),
@@ -807,8 +777,6 @@ return {
                                                               (v10/*: any*/),
                                                               (v11/*: any*/),
                                                               (v12/*: any*/),
-                                                              (v13/*: any*/),
-                                                              (v14/*: any*/),
                                                               {
                                                                 "alias": null,
                                                                 "args": null,
@@ -817,6 +785,8 @@ return {
                                                                 "name": "replies",
                                                                 "plural": true,
                                                                 "selections": [
+                                                                  (v2/*: any*/),
+                                                                  (v3/*: any*/),
                                                                   (v4/*: any*/),
                                                                   (v5/*: any*/),
                                                                   (v6/*: any*/),
@@ -826,8 +796,6 @@ return {
                                                                   (v10/*: any*/),
                                                                   (v11/*: any*/),
                                                                   (v12/*: any*/),
-                                                                  (v13/*: any*/),
-                                                                  (v14/*: any*/),
                                                                   {
                                                                     "alias": null,
                                                                     "args": null,
@@ -836,6 +804,8 @@ return {
                                                                     "name": "replies",
                                                                     "plural": true,
                                                                     "selections": [
+                                                                      (v2/*: any*/),
+                                                                      (v3/*: any*/),
                                                                       (v4/*: any*/),
                                                                       (v5/*: any*/),
                                                                       (v6/*: any*/),
@@ -845,8 +815,6 @@ return {
                                                                       (v10/*: any*/),
                                                                       (v11/*: any*/),
                                                                       (v12/*: any*/),
-                                                                      (v13/*: any*/),
-                                                                      (v14/*: any*/),
                                                                       {
                                                                         "alias": null,
                                                                         "args": null,
@@ -854,29 +822,7 @@ return {
                                                                         "kind": "LinkedField",
                                                                         "name": "replies",
                                                                         "plural": true,
-                                                                        "selections": [
-                                                                          (v4/*: any*/),
-                                                                          (v5/*: any*/),
-                                                                          (v6/*: any*/),
-                                                                          (v7/*: any*/),
-                                                                          (v8/*: any*/),
-                                                                          (v9/*: any*/),
-                                                                          (v10/*: any*/),
-                                                                          (v11/*: any*/),
-                                                                          (v12/*: any*/),
-                                                                          (v13/*: any*/),
-                                                                          (v14/*: any*/),
-                                                                          {
-                                                                            "alias": null,
-                                                                            "args": null,
-                                                                            "concreteType": "Comment",
-                                                                            "kind": "LinkedField",
-                                                                            "name": "replies",
-                                                                            "plural": true,
-                                                                            "selections": (v15/*: any*/),
-                                                                            "storageKey": null
-                                                                          }
-                                                                        ],
+                                                                        "selections": (v13/*: any*/),
                                                                         "storageKey": null
                                                                       }
                                                                     ],
@@ -930,14 +876,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3eb29560f2b2858b313a635254ffd012",
+    "cacheID": "6e332a9c7698c4d60b26a0835edc8fad",
     "id": null,
     "metadata": {},
-    "name": "ViewPostDialogCommentQuery",
+    "name": "ViewPostDialogGetCommentQuery",
     "operationKind": "query",
-    "text": "query ViewPostDialogCommentQuery(\n  $input: QueryCommentInput!\n) {\n  queryComment(input: $input) {\n    length\n    currentPage\n    comments {\n      ...CommentFragment\n      replies {\n        ...CommentFragment\n        replies {\n          ...CommentFragment\n          replies {\n            ...CommentFragment\n            replies {\n              ...CommentFragment\n              replies {\n                ...CommentFragment\n                replies {\n                  ...CommentFragment\n                  replies {\n                    ...CommentFragment\n                    replies {\n                      ...CommentFragment\n                      replies {\n                        ...CommentFragment\n                        replies {\n                          ...CommentFragment\n                          replies {\n                            ...CommentFragment\n                            replies {\n                              ...CommentFragment\n                              replies {\n                                ...CommentFragment\n                                replies {\n                                  ...CommentFragment\n                                  replies {\n                                    ...CommentFragment\n                                    replies {\n                                      ...CommentFragment\n                                      id\n                                    }\n                                    id\n                                  }\n                                  id\n                                }\n                                id\n                              }\n                              id\n                            }\n                            id\n                          }\n                          id\n                        }\n                        id\n                      }\n                      id\n                    }\n                    id\n                  }\n                  id\n                }\n                id\n              }\n              id\n            }\n            id\n          }\n          id\n        }\n        id\n      }\n      id\n    }\n  }\n}\n\nfragment CommentFragment on Comment {\n  id\n  postID\n  content\n  contentMode\n  createdAt\n  updatedAt\n  upVotes\n  downVotes\n  owner {\n    id\n    username\n    avatar\n  }\n  isUpVoted\n  isDownVoted\n}\n"
+    "text": "query ViewPostDialogGetCommentQuery(\n  $id: ID!\n) {\n  getComment(id: $id) {\n    ...CommentFragment\n    replies {\n      ...CommentFragment\n      replies {\n        ...CommentFragment\n        replies {\n          ...CommentFragment\n          replies {\n            ...CommentFragment\n            replies {\n              ...CommentFragment\n              replies {\n                ...CommentFragment\n                replies {\n                  ...CommentFragment\n                  replies {\n                    ...CommentFragment\n                    replies {\n                      ...CommentFragment\n                      replies {\n                        ...CommentFragment\n                        replies {\n                          ...CommentFragment\n                          replies {\n                            ...CommentFragment\n                            replies {\n                              ...CommentFragment\n                              replies {\n                                ...CommentFragment\n                                replies {\n                                  ...CommentFragment\n                                  replies {\n                                    ...CommentFragment\n                                    id\n                                  }\n                                  id\n                                }\n                                id\n                              }\n                              id\n                            }\n                            id\n                          }\n                          id\n                        }\n                        id\n                      }\n                      id\n                    }\n                    id\n                  }\n                  id\n                }\n                id\n              }\n              id\n            }\n            id\n          }\n          id\n        }\n        id\n      }\n      id\n    }\n    id\n  }\n}\n\nfragment CommentFragment on Comment {\n  id\n  postID\n  content\n  contentMode\n  createdAt\n  updatedAt\n  upVotes\n  downVotes\n  owner {\n    id\n    username\n    avatar\n  }\n  isUpVoted\n  isDownVoted\n}\n"
   }
 };
 })();
-(node as any).hash = '7321b71c43ee1fd0b4c3132e1c36d837';
+(node as any).hash = 'f2fa9c13940aaaa49c367729b9f643f1';
 export default node;

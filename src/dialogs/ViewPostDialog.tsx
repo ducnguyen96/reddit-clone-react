@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { useRelayEnvironment } from "react-relay";
 import { fetchQuery, graphql } from "relay-runtime";
 import { DownVoteButton, UpVoteButton } from "../common/StyledButtons";
@@ -17,13 +16,20 @@ import { Comment } from "../components/Comment/Comment";
 import { Post } from "../components/Post/Post";
 import { CommentFragment } from "../fragments/__generated__/CommentFragment.graphql";
 import { useActivePost, useViewPostDialog } from "../hooks";
-import { User } from "../hooks/useCurrentUser";
+import * as _ from "lodash";
+
 import { PostListFragment } from "../routes/home/Home";
 import { ViewPostDialogCommentQuery } from "./__generated__/ViewPostDialogCommentQuery.graphql";
 import { ViewPostDialogPostQuery } from "./__generated__/ViewPostDialogPostQuery.graphql";
+import {
+  mapNewCommentToCommentWithFragment,
+  newCommentToCommentWithFragment,
+} from "../utils/mapNewCommentToCommentWithFragment";
+import { ViewPostDialogGetCommentQuery } from "./__generated__/ViewPostDialogGetCommentQuery.graphql";
 
 export interface CommentWithFragment extends CommentFragment {
   replies: CommentWithFragment[];
+  oldestParentID?: string;
 }
 
 export function ViewPostDialog(): JSX.Element {
@@ -33,10 +39,36 @@ export function ViewPostDialog(): JSX.Element {
   const activePost = useActivePost();
   const environment = useRelayEnvironment();
   const [post, setPost] = useState<PostListFragment>();
-  const [updateCommentList, setUpdateCommentList] = useState(0);
 
-  const handleUpdateCommentList = () => {
-    setUpdateCommentList(updateCommentList + 1);
+  const handleUpdateCommentList = (
+    newComment: CommentWithFragment,
+    parent: Boolean
+  ) => {
+    if (!parent) {
+      console.log("newComment: ", newComment);
+      setCurrentComments([newComment].concat(currentComments));
+    } else {
+      const clone = currentComments;
+      const updatedIndex = currentComments.findIndex(
+        (c) => c.id === newComment.oldestParentID
+      );
+      fetchQuery<ViewPostDialogGetCommentQuery>(
+        environment,
+        commentGet,
+        { id: newComment.oldestParentID || "" },
+        {
+          fetchPolicy: "network-only",
+        }
+      )
+        .toPromise()
+        .then((res) => {
+          const mapped = newCommentToCommentWithFragment(res?.getComment);
+          clone[updatedIndex] = mapped;
+          setCurrentComments((prevState) =>
+            prevState.map((c) => (c.id === mapped.id ? { ...mapped } : c))
+          );
+        });
+    }
   };
 
   useEffect(() => {
@@ -63,23 +95,22 @@ export function ViewPostDialog(): JSX.Element {
   const [currentComments, setCurrentComments] = useState<CommentWithFragment[]>(
     []
   );
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
+  const [maxScrollTop, setMaxScrollTop] = useState(0);
 
   // Initial
   useEffect(() => {
-    console.log("updateCommentList :", updateCommentList);
     // load data
     if (!!post) {
       fetchQuery<ViewPostDialogCommentQuery>(environment, commentQuery, {
         input: {
           limit: 10,
-          page: currentPage,
+          page: 1,
           postID: post.id,
         },
-      })
-        .toPromise()
-        .then((res) => {
+      }).subscribe({
+        next: (res) => {
           const newComments = res?.queryComment.comments || [];
           if (newComments.length < 10) {
             setHasMore(false);
@@ -87,31 +118,13 @@ export function ViewPostDialog(): JSX.Element {
             setHasMore(true);
           }
 
-          const mapped: CommentWithFragment[] = newComments.map((c) => ({
-            // @ts-ignore
-            ...c["__fragments"]["CommentFragment"],
-            replies: c.replies.map((d) => ({
-              // @ts-ignore
-              ...d["__fragments"]["CommentFragment"],
-              replies: d.replies.map((e) => ({
-                // @ts-ignore
-                ...e["__fragments"]["CommentFragment"],
-                replies: e.replies.map((f) => ({
-                  // @ts-ignore
-                  ...f["__fragments"]["CommentFragment"],
-                  replies: f.replies.map((g) => ({
-                    // @ts-ignore
-                    ...g["__fragments"]["CommentFragment"],
-                  })),
-                })),
-              })),
-            })),
-          }));
-
+          const mapped: CommentWithFragment[] =
+            mapNewCommentToCommentWithFragment(newComments);
           setCurrentComments(mapped);
-        });
+        },
+      });
     }
-  }, [post, updateCommentList]);
+  }, [post]);
 
   const fetchData = () => {
     console.log("fetching comments...");
@@ -125,12 +138,17 @@ export function ViewPostDialog(): JSX.Element {
         },
       }).subscribe({
         next: (res) => {
-          console.log("res :", res);
           const newComments = res?.queryComment.comments || [];
           if (newComments.length < 10) {
             setHasMore(false);
+          } else {
+            setHasMore(true);
           }
-          setCurrentComments(currentComments.concat(newComments as any[]));
+
+          const mapped: CommentWithFragment[] =
+            mapNewCommentToCommentWithFragment(newComments);
+
+          setCurrentComments(currentComments.concat(mapped));
           setCurrentPage(currentPage + 1);
         },
       });
@@ -196,6 +214,7 @@ export function ViewPostDialog(): JSX.Element {
           Close
         </Button>
       </Paper>
+
       <DialogContent
         sx={{
           width: "1200px",
@@ -205,6 +224,24 @@ export function ViewPostDialog(): JSX.Element {
           // @ts-ignore
           backgroundColor: theme.palette.backgroundSecondary.default,
         }}
+        onScroll={_.debounce(function (e) {
+          const element = e.target;
+          // @ts-ignore
+          const scrollHeight = element.scrollHeight;
+
+          // @ts-ignore
+          const scrollTop = element.scrollTop;
+
+          const clientHeight = element.clientHeight;
+          if (
+            scrollHeight - scrollTop < clientHeight * 1.3 &&
+            hasMore &&
+            scrollTop > maxScrollTop
+          ) {
+            setMaxScrollTop(scrollTop);
+            fetchData();
+          }
+        }, 100)}
       >
         <Box sx={{ display: "flex", marginTop: "1rem" }}>
           <Paper sx={{ width: "740px", marginRight: "1rem" }}>
@@ -215,26 +252,15 @@ export function ViewPostDialog(): JSX.Element {
               sx={{ marginBottom: "0" }}
               handleUpdateCommentList={handleUpdateCommentList}
             />
-            <InfiniteScroll
-              dataLength={currentComments ? currentComments.length : 0}
-              next={fetchData}
-              hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
-            >
-              {currentComments.map((p, index) => (
-                <Comment
-                  main={p}
-                  theme={theme}
-                  key={index}
-                  handleUpdateCommentList={handleUpdateCommentList}
-                />
-              ))}
-            </InfiniteScroll>
+
+            {currentComments.map((p) => (
+              <Comment
+                main={p}
+                theme={theme}
+                key={p.id}
+                handleUpdateCommentList={handleUpdateCommentList}
+              />
+            ))}
           </Paper>
           <Paper sx={{ width: "312px" }}>Right</Paper>
         </Box>
@@ -280,7 +306,6 @@ const commentQuery = graphql`
       length
       currentPage
       comments {
-        id
         ...CommentFragment
         replies {
           ...CommentFragment
@@ -290,6 +315,98 @@ const commentQuery = graphql`
               ...CommentFragment
               replies {
                 ...CommentFragment
+                replies {
+                  ...CommentFragment
+                  replies {
+                    ...CommentFragment
+                    replies {
+                      ...CommentFragment
+                      replies {
+                        ...CommentFragment
+                        replies {
+                          ...CommentFragment
+                          replies {
+                            ...CommentFragment
+                            replies {
+                              ...CommentFragment
+                              replies {
+                                ...CommentFragment
+                                replies {
+                                  ...CommentFragment
+                                  replies {
+                                    ...CommentFragment
+                                    replies {
+                                      ...CommentFragment
+                                      replies {
+                                        ...CommentFragment
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const commentGet = graphql`
+  query ViewPostDialogGetCommentQuery($id: ID!) {
+    getComment(id: $id) {
+      ...CommentFragment
+      replies {
+        ...CommentFragment
+        replies {
+          ...CommentFragment
+          replies {
+            ...CommentFragment
+            replies {
+              ...CommentFragment
+              replies {
+                ...CommentFragment
+                replies {
+                  ...CommentFragment
+                  replies {
+                    ...CommentFragment
+                    replies {
+                      ...CommentFragment
+                      replies {
+                        ...CommentFragment
+                        replies {
+                          ...CommentFragment
+                          replies {
+                            ...CommentFragment
+                            replies {
+                              ...CommentFragment
+                              replies {
+                                ...CommentFragment
+                                replies {
+                                  ...CommentFragment
+                                  replies {
+                                    ...CommentFragment
+                                    replies {
+                                      ...CommentFragment
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
