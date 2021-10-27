@@ -7,7 +7,7 @@ import {
 } from "react-relay";
 import { IsCommunityNameExisted } from "../../graphql/queries/IsCommunityNameExisted";
 import { IsCommunityNameExistedQuery } from "../../graphql/queries/__generated__/IsCommunityNameExistedQuery.graphql";
-import { useCreateCommunityDialog } from "../../hooks";
+import { useCreateCommunityDialog, useCurrentCommunity } from "../../hooks";
 import { createCommunityMutation } from "./CreateCommunity";
 import {
   CommunityType,
@@ -35,6 +35,8 @@ export const ErrorWhenCreatingCommunity = ({
 
   const dialog = useCreateCommunityDialog();
 
+  const currentCommunity = useCurrentCommunity();
+
   if (!data.isCommunityNameExisted) {
     const environment = useRelayEnvironment();
     commitMutation<CreateCommunityMutation>(environment, {
@@ -48,6 +50,14 @@ export const ErrorWhenCreatingCommunity = ({
       },
       onCompleted: (res) => {
         dialog.hide();
+        if (res.createCommunity) {
+          const created = res.createCommunity;
+          currentCommunity.setCurrentCommunity({
+            id: created.id,
+            name: created.name,
+            numberOfMember: 1,
+          });
+        }
       } /* Mutation completed */,
       onError: (error) => {
         console.log("error :", error);

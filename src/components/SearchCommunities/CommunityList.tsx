@@ -8,7 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useCommunityOnList, useCreateCommunityDialog } from "../../hooks";
+import {
+  useCommunityOnList,
+  useCreateCommunityDialog,
+  useCurrentCommunity,
+} from "../../hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export type CommunityFragment = {
@@ -18,10 +22,10 @@ export type CommunityFragment = {
 };
 
 export type CommunityListProps = {
-  handleOnSelectCommunity: (c: CommunityFragment) => void;
+  handleOnSelectCommunity: () => void;
 };
 
-export function CommunityList(props: CommunityListProps) {
+export function CommunityList({ handleOnSelectCommunity }: CommunityListProps) {
   const theme = useTheme();
 
   const communities = useCommunityOnList();
@@ -54,6 +58,9 @@ export function CommunityList(props: CommunityListProps) {
     event.preventDefault();
     communityDialog.show();
   }
+
+  const currentCommunity = useCurrentCommunity();
+
   return (
     <>
       <OutlinedInput
@@ -101,7 +108,8 @@ export function CommunityList(props: CommunityListProps) {
         <MenuItem
           key={community.id}
           onClick={() => {
-            props.handleOnSelectCommunity(community);
+            currentCommunity.setCurrentCommunity(community);
+            handleOnSelectCommunity();
           }}
         >
           <Avatar

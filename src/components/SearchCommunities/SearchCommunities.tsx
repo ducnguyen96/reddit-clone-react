@@ -1,19 +1,10 @@
 import { CircleOutlined, KeyboardArrowDownOutlined } from "@mui/icons-material";
 import { Button, Typography, Box, Paper, Popover, Avatar } from "@mui/material";
 import * as React from "react";
-import { CommunityFragment, CommunityList } from "./CommunityList";
+import { useCurrentCommunity } from "../../hooks";
+import { CommunityList } from "./CommunityList";
 
-export type SearchCommunitiesProp = {
-  selectedCommunity: CommunityFragment | null;
-  setSelectedCommunity: React.Dispatch<
-    React.SetStateAction<CommunityFragment | null>
-  >;
-};
-
-export const SearchCommunities = ({
-  selectedCommunity,
-  setSelectedCommunity,
-}: SearchCommunitiesProp) => {
+export const SearchCommunities = () => {
   // Communities Drop Menu
   const [communityMenuAnchorEl, setCommunityMenuAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -27,10 +18,7 @@ export const SearchCommunities = ({
     setCommunityMenuAnchorEl(null);
   };
 
-  const handleOnSelectCommunity = (c: CommunityFragment) => {
-    setSelectedCommunity(c);
-    handleCloseCommunityMenu();
-  };
+  const currentCommunity = useCurrentCommunity();
   return (
     <Paper sx={{ width: "270px" }} elevation={0}>
       {/* Button to activate menu */}
@@ -50,17 +38,19 @@ export const SearchCommunities = ({
         onClick={handleClickOpenCommunityMenu}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          {selectedCommunity ? (
+          {currentCommunity.community ? (
             <>
               <Avatar
-                {...{ children: selectedCommunity.name[2].toLowerCase() }}
+                {...{
+                  children: currentCommunity.community.name[2].toLowerCase(),
+                }}
                 sx={{ marginLeft: "8px", width: "25px", height: "25px" }}
               />
               <Typography
                 sx={{ marginLeft: "8px", fontWeight: "bold" }}
                 variant="h4"
               >
-                {`r/${selectedCommunity.name}`}
+                {`r/${currentCommunity.community.name}`}
               </Typography>
             </>
           ) : (
@@ -87,7 +77,7 @@ export const SearchCommunities = ({
         sx={{ top: "38px", maxHeight: "482px", padding: 0 }}
         PaperProps={{ elevation: 1 }}
       >
-        <CommunityList handleOnSelectCommunity={handleOnSelectCommunity} />
+        <CommunityList handleOnSelectCommunity={handleCloseCommunityMenu} />
       </Popover>
     </Paper>
   );

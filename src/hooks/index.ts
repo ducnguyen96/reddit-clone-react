@@ -9,3 +9,4 @@ export { useCreateCommunityDialog } from "./useCreateCommunityDialog";
 export { useCommunityOnList } from "./useListCommunity";
 export { useViewPostDialog } from "./useViewPostDialog";
 export { useActivePost } from "./useActivePost";
+export { useCurrentCommunity } from "./useCurrentCommunity";

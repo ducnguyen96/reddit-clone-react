@@ -10,7 +10,7 @@ import {
   InputContentMode,
   PostType,
 } from "../../graphql/types";
-import { useHistory, useLoginDialog } from "../../hooks";
+import { useCurrentCommunity, useHistory, useLoginDialog } from "../../hooks";
 import { SubmitMutation } from "./__generated__/SubmitMutation.graphql";
 import { submitQueryResponse } from "./__generated__/submitQuery.graphql";
 
@@ -22,35 +22,31 @@ export default function Submit(props: submitQueryResponse): JSX.Element {
     loginDialog.show();
   }
 
-  const [selectedCommunity, setSelectedCommunity] =
-    useState<CommunityFragment | null>(null);
-
   const [postContent, setPostContent] = useState("");
   const [title, setTitle] = useState("");
 
   const environment = useRelayEnvironment();
+
+  const currentCommunity = useCurrentCommunity();
   const handleCreatePost = () => {
-    // validate input
-    if (!selectedCommunity || !postContent || !title) {
-      return;
+    if (currentCommunity.community) {
+      const input: CreatePostInput = {
+        communityId: currentCommunity.community.id,
+        content: postContent,
+        contentMode: InputContentMode.MarkDown,
+        title,
+        type: PostType.Post,
+      };
+
+      // submit mutation
+      return commitMutation<SubmitMutation>(environment, {
+        mutation: createPostMutation,
+        variables: { input },
+        onCompleted: (res) => {
+          location.href = "/";
+        },
+      });
     }
-
-    const input: CreatePostInput = {
-      communityId: selectedCommunity?.id || "",
-      content: postContent,
-      contentMode: InputContentMode.MarkDown,
-      title,
-      type: PostType.Post,
-    };
-
-    // submit mutation
-    return commitMutation<SubmitMutation>(environment, {
-      mutation: createPostMutation,
-      variables: { input },
-      onCompleted: (res) => {
-        location.href = "/";
-      },
-    });
   };
   return (
     <>
@@ -69,10 +65,7 @@ export default function Submit(props: submitQueryResponse): JSX.Element {
             Create a post
           </Typography>
           <Divider />
-          <SearchCommunities
-            selectedCommunity={selectedCommunity}
-            setSelectedCommunity={setSelectedCommunity}
-          />
+          <SearchCommunities />
           <CreatePostEditor
             setPostContent={setPostContent}
             handleCreatePost={handleCreatePost}

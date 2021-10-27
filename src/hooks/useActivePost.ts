@@ -12,7 +12,7 @@ const state = {
 };
 
 export function useActivePost(monitor = false): typeof state {
-  const [loginDialog, dispatch] = React.useState(state);
+  const [activePost, dispatch] = React.useState(state);
 
   React.useEffect(() => {
     if (!monitor) return;
@@ -22,5 +22,5 @@ export function useActivePost(monitor = false): typeof state {
     };
   }, [dispatch]);
 
-  return loginDialog;
+  return activePost;
 }
