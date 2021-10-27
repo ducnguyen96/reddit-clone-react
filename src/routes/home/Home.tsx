@@ -8,6 +8,7 @@ import { CreatePostHome } from "../../components/CreatePostHome/CreatePostHome";
 import { Post } from "../../components/Post/Post";
 import { SortPost } from "../../components/SortPost/SortPost";
 import { TopNewCommunities } from "../../components/TopNewCommunities/TopNewCommunities";
+import { SortPostEnum } from "../../graphql/types";
 import { useCurrentUser } from "../../hooks";
 import {
   HomeQuery,
@@ -54,25 +55,39 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
 
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(2);
+  const [currentSort, setCurrentSort] = useState(SortPostEnum.Best);
 
   const environment = useRelayEnvironment();
-  const fetchData = () => {
+  const fetchData = (page?: number, sort?: SortPostEnum) => {
     // load data
     fetchQuery<HomeQuery>(environment, queryPost, {
       input: {
         limit: 10,
-        page: currentPage,
+        page: page ? page : currentPage,
+        sort: sort ? sort : currentSort,
       },
     }).subscribe({
       next: (res) => {
         const newPosts = res?.queryPost.posts || [];
         if (newPosts.length < 10) {
           setHasMore(false);
+        } else {
+          setHasMore(true);
         }
-        setCurrentPosts(currentPosts.concat(newPosts));
-        setCurrentPage(currentPage + 1);
+        if (page) {
+          setCurrentPosts(newPosts);
+          setCurrentPage(2);
+        } else {
+          setCurrentPosts(currentPosts.concat(newPosts));
+          setCurrentPage(currentPage + 1);
+        }
       },
     });
+  };
+
+  const handleChangeSort = (newSort: SortPostEnum) => {
+    fetchData(1, newSort);
+    setCurrentSort(newSort);
   };
 
   return (
@@ -82,7 +97,11 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
       >
         <Box sx={{ width: "640px" }}>
           {me && <CreatePostHome username={me.username} />}
-          <SortPost theme={theme} />
+          <SortPost
+            theme={theme}
+            handleChangeSort={handleChangeSort}
+            currentSort={currentSort}
+          />
           <InfiniteScroll
             dataLength={currentPosts ? currentPosts.length : 0}
             next={fetchData}

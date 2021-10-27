@@ -334,6 +334,9 @@ input QueryPostInput {
 
   #
   page: Int
+
+  #
+  sort: SortPostEnum
 }
 
 #
@@ -362,6 +365,21 @@ union RegisterResult =
     RegisterPayload
   | RegisterBadRequest
   | RegisterInternalServerError
+
+#
+enum SortPostEnum {
+  #
+  BEST
+
+  #
+  HOT
+
+  #
+  NEW
+
+  #
+  TOP
+}
 
 #
 type TokenPayloadDto {

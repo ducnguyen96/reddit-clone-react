@@ -239,6 +239,7 @@ export const Post = ({
               variant="text"
               startIcon={<ModeCommentOutlined />}
               sx={{ borderRadius: "20px", marginRight: "8px", color }}
+              onClick={handleClickViewPost}
             >
               {`${fragment.numberOfComments} comments`}
             </Button>

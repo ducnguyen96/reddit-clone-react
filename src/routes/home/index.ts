@@ -1,4 +1,5 @@
 import { Route } from "../../core/router";
+import { SortPostEnum } from "../../graphql/types";
 import type Home from "./Home";
 import { queryPost } from "./Home";
 import { HomeQueryResponse } from "./__generated__/HomeQuery.graphql";
@@ -13,6 +14,7 @@ export default {
     input: {
       limit: 10,
       page: 1,
+      sort: SortPostEnum.Best,
     },
   },
   component: () => import(/* webpackChunkName: "home" */ "./Home"),

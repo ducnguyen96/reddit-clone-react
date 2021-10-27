@@ -6,9 +6,11 @@ import { ConcreteRequest } from "relay-runtime";
 
 export type InputContentMode = "MarkDown" | "TextEditor" | "%future added value";
 export type PostType = "Image_Video" | "Link" | "Post" | "%future added value";
+export type SortPostEnum = "BEST" | "HOT" | "NEW" | "TOP" | "%future added value";
 export type QueryPostInput = {
     limit?: number | null;
     page?: number | null;
+    sort?: SortPostEnum | null;
 };
 export type HomeQueryVariables = {
     input: QueryPostInput;
