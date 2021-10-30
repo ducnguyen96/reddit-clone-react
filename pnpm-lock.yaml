@@ -33,7 +33,6 @@ specifiers:
   relay-config: ^12.0.0
   relay-runtime: ^12.0.0
   remark-gfm: ^3.0.0
-  screenfull: ^5.1.0
   typescript: ^4.4.4
   vite: ^2.6.4
   vite-plugin-relay: ^1.0.6
@@ -43,7 +42,6 @@ dependencies:
   '@emotion/styled': 11.3.0_a18847030f5d66c91ccc2d367a906fbb
   '@mui/icons-material': 5.0.4_e9b24d4362a2635d8603662f0ffe60af
   '@mui/material': 5.0.4_514b911bf899363031b909b61e54fecc
-  '@types/markdown-it': 12.2.3
   history: 5.0.1
   lodash: 4.17.21
   markdown-it: 12.2.0
@@ -57,12 +55,12 @@ dependencies:
   react-relay: 12.0.0_react@17.0.2
   relay-runtime: 12.0.0
   remark-gfm: 3.0.0
-  screenfull: 5.1.0
 
 devDependencies:
   '@graphql-codegen/cli': 2.2.1_graphql@15.6.1+typescript@4.4.4
   '@graphql-codegen/typescript': 2.2.4_graphql@15.6.1
   '@types/lodash': 4.14.176
+  '@types/markdown-it': 12.2.3
   '@types/react': 17.0.30
   '@types/react-dom': 17.0.9
   '@types/react-relay': 11.0.2
@@ -1493,7 +1491,7 @@ packages:
 
   /@types/linkify-it/3.0.2:
     resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==}
-    dev: false
+    dev: true
 
   /@types/lodash/4.14.176:
     resolution: {integrity: sha512-xZmuPTa3rlZoIbtDUyJKZQimJV3bxCmzMIO2c9Pz9afyDro6kr7R79GwcB6mRhuoPmV2p1Vb66WOJH7F886WKQ==}
@@ -1504,7 +1502,7 @@ packages:
     dependencies:
       '@types/linkify-it': 3.0.2
       '@types/mdurl': 1.0.2
-    dev: false
+    dev: true
 
   /@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
@@ -1514,7 +1512,6 @@ packages:
 
   /@types/mdurl/1.0.2:
     resolution: {integrity: sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==}
-    dev: false
 
   /@types/ms/0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
@@ -4671,11 +4668,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: false
-
-  /screenfull/5.1.0:
-    resolution: {integrity: sha512-dYaNuOdzr+kc6J6CFcBrzkLCfyGcMg+gWkJ8us93IQ7y1cevhQAugFsaCdMHb6lw8KV3xPzSxzH7zM1dQap9mA==}
-    engines: {node: '>=0.10.0'}
     dev: false
 
   /scuid/1.1.0:
