@@ -219,31 +219,65 @@ export const Post = ({
           </Box>
 
           {/* MIDDLE */}
-          <Box
-            sx={{ padding: "8px", ":hover": { cursor: "pointer" } }}
-            onClick={handleClickViewPost}
-          >
-            <Typography variant="h4" sx={{ fontWeight: "bold" }} color={color}>
-              {fragment.title}
-            </Typography>
-            {/* <Typography variant="body1" color={postColor}> */}
-            {fragment.type === "Post" ? (
+          {fragment.type === "Post" ? (
+            <Box
+              sx={{ padding: "8px", ":hover": { cursor: "pointer" } }}
+              onClick={handleClickViewPost}
+            >
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: "bold" }}
+                color={color}
+              >
+                {fragment.title}
+              </Typography>
+              {/* <Typography variant="body1" color={postColor}> */}
               <ReactMarkdown
                 children={fragment.content}
                 remarkPlugins={[remarkGfm]}
                 className="markdown-content"
               />
-            ) : fragment.content.startsWith("/images") ? (
+
+              {/* </Typography> */}
+            </Box>
+          ) : fragment.content.startsWith("/images") ? (
+            <Box
+              onClick={handleClickViewPost}
+              sx={{ ":hover": { cursor: "pointer" } }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: "bold",
+                  marginBottom: ".5rem",
+                }}
+                color={color}
+              >
+                {fragment.title}
+              </Typography>
               <img
                 src={mediaServer.origin + fragment.content}
                 style={{ width: "100%" }}
                 alt="image"
               />
-            ) : (
+            </Box>
+          ) : (
+            <Box>
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: "bold",
+                  marginBottom: ".5rem",
+                  ":hover": { cursor: "pointer" },
+                }}
+                color={color}
+                onClick={handleClickViewPost}
+              >
+                {fragment.title}
+              </Typography>
               <VideoPlayer fragmentContent={fragment.content} />
-            )}
-            {/* </Typography> */}
-          </Box>
+            </Box>
+          )}
 
           {/* BOTTOM */}
           <Box sx={{ padding: "8px", display: "flex", alignItems: "center" }}>
