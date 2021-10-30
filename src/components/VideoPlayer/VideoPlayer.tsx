@@ -14,8 +14,15 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import ReactPlayer from "react-player";
+import { mediaServer } from "../../config";
 
-export default function Test(): JSX.Element {
+export type VideoPlayerProps = {
+  fragmentContent: string;
+};
+
+export default function VideoPlayer({
+  fragmentContent,
+}: VideoPlayerProps): JSX.Element {
   const [volume, setVolume] = useState(30);
   const [playing, setPlaying] = useState(false);
   const [fade, setFade] = useState(false);
@@ -26,13 +33,15 @@ export default function Test(): JSX.Element {
   const handleChangeVolume = (event: Event, newValue: number | number[]) => {
     setVolume(newValue as number);
   };
+
+  const id = fragmentContent.split("/")[3];
+  const url = `${mediaServer.origin}/dash/${id}/${id}`;
   return (
     // Render a YouTube video player
     <>
       <Paper
         sx={{
           position: "relative",
-          margin: "100px",
           width: "580px",
           height: "326px",
         }}
@@ -40,7 +49,7 @@ export default function Test(): JSX.Element {
         onMouseLeave={() => setFade(false)}
       >
         <ReactPlayer
-          url="http://localhost/dash/2bed48f3-1348-4c12-a890-2a3fc633da5b-video.mp4/2bed48f3-1348-4c12-a890-2a3fc633da5b-video.mp4"
+          url={url}
           config={{
             file: { forceDASH: true },
           }}

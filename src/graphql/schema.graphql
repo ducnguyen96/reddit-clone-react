@@ -133,6 +133,15 @@ input CreateCommunityInput {
 }
 
 #
+input CreateMediaInput {
+  #
+  url: String!
+
+  #
+  type: MediaType!
+}
+
+#
 input CreatePostInput {
   #
   title: String!
@@ -178,12 +187,42 @@ enum InputContentMode {
 }
 
 #
+type Media {
+  #
+  id: ID!
+
+  #
+  url: String!
+
+  #
+  type: MediaType!
+
+  #
+  createdAt: String!
+
+  #
+  updatedAt: String!
+}
+
+#
+enum MediaType {
+  #
+  Image
+
+  #
+  Video
+}
+
+#
 type Mutation {
   #
   createComment(input: CreateCommentInput!): Comment!
 
   #
   createCommunity(input: CreateCommunityInput!): Community!
+
+  #
+  createMedia(input: CreateMediaInput!): Media!
 
   #
   createPost(input: CreatePostInput!): Post!

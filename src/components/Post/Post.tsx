@@ -20,12 +20,14 @@ import { useRelayEnvironment } from "react-relay";
 import { commitMutation, graphql } from "relay-runtime";
 import remarkGfm from "remark-gfm";
 import { DownVoteButton, UpVoteButton } from "../../common/StyledButtons";
+import { mediaServer } from "../../config";
 import { CommentWithFragment } from "../../dialogs/ViewPostDialog";
 import { MyEditor } from "../../editor/MyEditor";
 import { useActivePost, useViewPostDialog } from "../../hooks";
 import { PostListFragment } from "../../routes/home/Home";
 import { getCreatedAt } from "../../utils/createdAt";
 import { stringAvatar } from "../../utils/stringAvatar";
+import VideoPlayer from "../VideoPlayer/VideoPlayer";
 import {
   CreateCommentInput,
   PostCommentMutation,
@@ -225,11 +227,21 @@ export const Post = ({
               {fragment.title}
             </Typography>
             {/* <Typography variant="body1" color={postColor}> */}
-            <ReactMarkdown
-              children={fragment.content}
-              remarkPlugins={[remarkGfm]}
-              className="markdown-content"
-            />
+            {fragment.type === "Post" ? (
+              <ReactMarkdown
+                children={fragment.content}
+                remarkPlugins={[remarkGfm]}
+                className="markdown-content"
+              />
+            ) : fragment.content.startsWith("/images") ? (
+              <img
+                src={mediaServer.origin + fragment.content}
+                style={{ width: "100%" }}
+                alt="image"
+              />
+            ) : (
+              <VideoPlayer fragmentContent={fragment.content} />
+            )}
             {/* </Typography> */}
           </Box>
 

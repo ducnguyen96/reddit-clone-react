@@ -38,7 +38,8 @@ export const MyEditor = (props: MyEditorProps) => {
       <Global
         styles={css`
           .rc-md-editor {
-            height: ${props.height ? props.height : 350}px;
+            height: ${props.height ? props.height + "px" : "unset"};
+            min-height: 100px;
             margin: 1rem;
             padding-bottom: 0px !important;
             border: 1px solid #969696 !important;

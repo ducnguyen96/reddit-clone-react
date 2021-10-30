@@ -24,18 +24,20 @@ export default function Submit(props: submitQueryResponse): JSX.Element {
 
   const [postContent, setPostContent] = useState("");
   const [title, setTitle] = useState("");
+  const [postType, setPostType] = useState(PostType.Post);
 
   const environment = useRelayEnvironment();
 
   const currentCommunity = useCurrentCommunity();
   const handleCreatePost = () => {
     if (currentCommunity.community) {
+      if (postType === PostType.ImageVideo && postContent.length < 10) return;
       const input: CreatePostInput = {
         communityId: currentCommunity.community.id,
         content: postContent,
         contentMode: InputContentMode.MarkDown,
         title,
-        type: PostType.Post,
+        type: postType,
       };
 
       // submit mutation
@@ -67,6 +69,8 @@ export default function Submit(props: submitQueryResponse): JSX.Element {
           <Divider />
           <SearchCommunities />
           <CreatePostEditor
+            postType={postType}
+            setPostType={setPostType}
             setPostContent={setPostContent}
             handleCreatePost={handleCreatePost}
             title={title}

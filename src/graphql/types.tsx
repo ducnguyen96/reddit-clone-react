@@ -9,6 +9,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Upload: any;
 };
 
 export type Comment = {
@@ -104,6 +105,7 @@ export type Mutation = {
   login: TokenPayloadDto;
   register: RegisterResult;
   signOut?: Maybe<Scalars['Boolean']>;
+  singleUpload: Scalars['Boolean'];
   userCreateAction: UserAction;
 };
 
@@ -130,6 +132,11 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   input: UserRegisterInput;
+};
+
+
+export type MutationSingleUploadArgs = {
+  file: Scalars['Upload'];
 };
 
 
