@@ -217,6 +217,7 @@ export function LoginDialog(): JSX.Element {
             {/* Login buttons */}
             {/* <LoginButton provider="Google" /> */}
             <GoogleLogin
+              autoLoad={false}
               clientId="754019167088-gkud4fokner004hk3rn0gdobheu1a7ae.apps.googleusercontent.com"
               render={(renderProps) => (
                 <Button
