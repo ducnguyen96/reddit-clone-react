@@ -237,6 +237,9 @@ type Mutation {
   signOut: Boolean
 
   #
+  loginGoogle(gmail: String!): TokenPayloadDto!
+
+  #
   userCreateAction(input: UserCreateActionInput!): UserAction!
 }
 
