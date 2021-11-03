@@ -12,7 +12,6 @@ import {
 } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  alpha,
   AppBar,
   AppBarProps,
   Avatar,
@@ -87,57 +86,6 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
     signupDialog.show();
   }
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    // @ts-ignore
-    borderRadius: theme.shape.borderRadius,
-    // @ts-ignore
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      // @ts-ignore
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    // @ts-ignore
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    // @ts-ignore,
-    [theme.breakpoints.up("sm")]: {
-      // @ts-ignore
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    // @ts-ignore
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(OutlinedInput)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      // @ts-ignore
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      // @ts-ignore
-      paddingLeft: `calc(1em + ${theme.spacing(3)})`,
-      // @ts-ignore
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      // @ts-ignore
-      [theme.breakpoints.up("md")]: {
-        width: "100ch",
-      },
-    },
-  }));
-
   // Communities Drop Menu
   const [communityMenuAnchorEl, setCommunityMenuAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -176,6 +124,36 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
     );
   };
 
+  const AppNameLogo = styled(Typography)(({ theme }) => ({
+    fontSize: "1.4rem",
+    fontWeight: 500,
+    // @ts-ignore
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  }));
+
+  const UserButtons = styled(Box)(({ theme }) => ({
+    // @ts-ignore
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
+  }));
+
+  const MyCommunities = styled(Box)(({ theme }) => ({
+    // @ts-ignore
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
+  }));
+
+  const SearchBox = styled(Box)(({ theme }) => ({
+    // @ts-ignore
+    [theme.breakpoints.down("md")]: {
+      marginLeft: "1rem",
+    },
+  }));
+
   return (
     <AppBar
       sx={{
@@ -193,7 +171,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
         sx={{
           display: "flex",
           backgroundColor: mode == "light" ? "white" : "#121212",
-          minHeight: "48px !important",
+          minHeight: "3rem !important",
         }}
       >
         {/* App name / logo */}
@@ -202,19 +180,24 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
           <IconButton
             sx={{
               backgroundColor: "#FF4500",
-              width: "32px",
-              height: "32px",
-              marginRight: "5px",
+              width: "2rem",
+              height: "2rem",
+              marginRight: ".3125rem",
             }}
           >
             <Reddit sx={{ color: "white" }} />
           </IconButton>
-          <Typography sx={{ fontSize: "1.4rem", fontWeight: 500 }} variant="h5">
+          <AppNameLogo
+            sx={{ fontSize: "1.4rem", fontWeight: 500 }}
+            variant="h5"
+          >
             <Link color="inherit" underline="none" href="/" onClick={navigate}>
               {config.app.name}
             </Link>
-          </Typography>
-          <Box sx={{ width: "270px", marginLeft: "10px" }}>
+          </AppNameLogo>
+
+          {/* My Communities */}
+          <MyCommunities sx={{ width: "16.875rem", marginLeft: ".625rem" }}>
             {/* Button to activate menu */}
             <Button
               variant="text"
@@ -232,7 +215,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                 <Home />
                 <Typography
                   variant="h4"
-                  sx={{ fontWeight: "bold", marginLeft: "8px" }}
+                  sx={{ fontWeight: "bold", marginLeft: ".5rem" }}
                 >
                   Home
                 </Typography>
@@ -246,15 +229,7 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
               anchorEl={communityMenuAnchorEl}
               open={isCommunityMenuOpen}
               onClose={handleCloseCommunityMenu}
-              // MenuListProps={{
-              //   style: {
-              //     padding: 0,
-              //     width: "270px",
-              //     maxWidth: "100",
-              //     maxHeight: "482px",
-              //   },
-              // }}
-              sx={{ top: "32px", maxHeight: "482px" }}
+              sx={{ top: "2rem", maxHeight: "30.125rem" }}
               PaperProps={{ elevation: 0, style: { borderRadius: 0 } }}
             >
               <OutlinedInput
@@ -262,8 +237,8 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                 size="small"
                 sx={{
                   borderRadius: 0,
-                  height: "30px",
-                  margin: "16px",
+                  height: "1.875rem",
+                  margin: "1ren",
                   color: "inherit",
                 }}
                 autoFocus
@@ -272,8 +247,8 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
               />
               <Box
                 sx={{
-                  padding: "0px 24px 8px",
-                  fontSize: "10px",
+                  padding: "0 1.5rem .5rem",
+                  fontSize: ".625rem",
                   fontWeight: "500",
                 }}
               >
@@ -284,101 +259,113 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
                 <MenuItem key={value.id}>
                   <Avatar
                     {...{ children: value.name[0] }}
-                    sx={{ marginLeft: "8px", width: "25px", height: "25px" }}
+                    sx={{
+                      marginLeft: ".5rem",
+                      width: "1.5625rem",
+                      height: "1.5625rem",
+                    }}
                   />
-                  <Typography sx={{ marginLeft: "8px" }} variant="h4">
+                  <Typography sx={{ marginLeft: ".5rem" }} variant="h4">
                     {`r/${value.name}`}
                   </Typography>
                   <StarOutline sx={{ marginLeft: "auto" }} />
                 </MenuItem>
               ))}
             </Popover>
-          </Box>
+          </MyCommunities>
         </Box>
 
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
+        <SearchBox
+          sx={{
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            flexGrow: 1,
+            maxWidth: "50vw",
+          }}
+        >
+          <SearchIcon sx={{ position: "absolute", marginLeft: ".75rem" }} />
+          <OutlinedInput
             placeholder="Search Reddit"
             inputProps={{
               "aria-label": "search",
-              style: { padding: "6px 8px 6px 45px", fontSize: "14px" },
+              style: {
+                padding: ".375rem .5rem .375rem 2.8125rem",
+                fontSize: ".875rem",
+              },
             }}
+            sx={{ width: "100%" }}
           />
-        </Search>
-
-        {/* <span style={{ flexGrow: 1 }} /> */}
-
-        {/* Account related controls (icon buttons) */}
+        </SearchBox>
 
         <Box sx={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
-          {user && (
-            <IconButton
-              sx={{
-                marginLeft: (x) => x.spacing(1),
-                backgroundColor: (x) =>
-                  x.palette.mode === "light"
-                    ? x.palette.grey[300]
-                    : x.palette.grey[700],
-                width: 40,
-                height: 40,
-              }}
-              children={<TextsmsOutlined />}
-            />
-          )}
-          {user && (
-            <IconButton
-              sx={{
-                marginLeft: (x) => x.spacing(1),
-                backgroundColor: (x) =>
-                  x.palette.mode === "light"
-                    ? x.palette.grey[300]
-                    : x.palette.grey[700],
-                width: 40,
-                height: 40,
-              }}
-              children={<NotificationsNone />}
-              onClick={openNotificationsMenu}
-            />
-          )}
-          {user && (
-            <IconButton
-              sx={{
-                marginLeft: (x) => x.spacing(1),
-                backgroundColor: (x) =>
-                  x.palette.mode === "light"
-                    ? x.palette.grey[300]
-                    : x.palette.grey[700],
-                width: 40,
-                height: 40,
-              }}
-              children={<AddOutlined />}
-              onClick={() => {
-                location.href = "/submit";
-              }}
-            />
-          )}
-          {user && (
-            <Chip
-              sx={{
-                height: 40,
-                borderRadius: 20,
-                fontWeight: 600,
-                marginLeft: "8px",
-                backgroundColor: (x) =>
-                  x.palette.mode === "light"
-                    ? x.palette.grey[300]
-                    : x.palette.grey[700],
-                ".MuiChip-avatar": { width: 32, height: 32 },
-              }}
-              component="a"
-              avatar={<Avatar alt={user.username || ""} src={""} />}
-              label={getFirstName(user.username || "")}
-              onClick={navigate}
-            />
-          )}
+          <UserButtons>
+            {user && (
+              <IconButton
+                sx={{
+                  marginLeft: (x) => x.spacing(1),
+                  backgroundColor: (x) =>
+                    x.palette.mode === "light"
+                      ? x.palette.grey[300]
+                      : x.palette.grey[700],
+                  width: 40,
+                  height: 40,
+                }}
+                children={<TextsmsOutlined />}
+              />
+            )}
+            {user && (
+              <IconButton
+                sx={{
+                  marginLeft: (x) => x.spacing(1),
+                  backgroundColor: (x) =>
+                    x.palette.mode === "light"
+                      ? x.palette.grey[300]
+                      : x.palette.grey[700],
+                  width: 40,
+                  height: 40,
+                }}
+                children={<NotificationsNone />}
+                onClick={openNotificationsMenu}
+              />
+            )}
+            {user && (
+              <IconButton
+                sx={{
+                  marginLeft: (x) => x.spacing(1),
+                  backgroundColor: (x) =>
+                    x.palette.mode === "light"
+                      ? x.palette.grey[300]
+                      : x.palette.grey[700],
+                  width: 40,
+                  height: 40,
+                }}
+                children={<AddOutlined />}
+                onClick={() => {
+                  location.href = "/submit";
+                }}
+              />
+            )}
+            {user && (
+              <Chip
+                sx={{
+                  height: 40,
+                  borderRadius: 20,
+                  fontWeight: 600,
+                  marginLeft: ".5rem",
+                  backgroundColor: (x) =>
+                    x.palette.mode === "light"
+                      ? x.palette.grey[300]
+                      : x.palette.grey[700],
+                  ".MuiChip-avatar": { width: 32, height: 32 },
+                }}
+                component="a"
+                avatar={<Avatar alt={user.username || ""} src={""} />}
+                label={getFirstName(user.username || "")}
+                onClick={navigate}
+              />
+            )}
+          </UserButtons>
 
           {user && (
             <IconButton
@@ -429,12 +416,12 @@ export function AppToolbar(props: AppToolbarProps): JSX.Element {
       <NotificationsMenu
         anchorEl={anchorEl.notifications}
         onClose={closeNotificationsMenu}
-        PaperProps={{ sx: { marginTop: "8px" } }}
+        PaperProps={{ sx: { marginTop: ".5rem" } }}
       />
       <UserMenu
         anchorEl={anchorEl.userMenu}
         onClose={closeUserMenu}
-        PaperProps={{ sx: { marginTop: "8px" } }}
+        PaperProps={{ sx: { marginTop: ".5rem" } }}
         onChangeTheme={onChangeTheme}
       />
     </AppBar>

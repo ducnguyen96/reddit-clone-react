@@ -16,7 +16,7 @@ export const TopNewCommunities = () => {
             position: "relative",
             background: `linear-gradient(180deg, rgba(0,0,0,0), #00000075), url("https://i.stack.imgur.com/IuWLZ.jpg")`,
             backgroundPosition: "center",
-            width: "310px",
+            // width: "310px",
             height: "100px",
           }}
         >
@@ -76,7 +76,7 @@ export const TopNewCommunities = () => {
               }}
               size="small"
             >
-              Near You
+              News
             </Button>
             <Button
               variant="contained"

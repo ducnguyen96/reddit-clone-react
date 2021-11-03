@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import ReactPlayer from "react-player";
 import { mediaServer } from "../../config";
 
@@ -14,25 +14,16 @@ export default function VideoPlayer({
 
   return (
     // Render a YouTube video player
-    <>
-      <Paper
-        sx={{
-          position: "relative",
-          width: "580px",
-          height: "326px",
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <ReactPlayer
+        url={url}
+        config={{
+          file: { forceDASH: true },
         }}
-      >
-        <ReactPlayer
-          url={url}
-          config={{
-            file: { forceDASH: true },
-          }}
-          style={{}}
-          width={"580px"}
-          height={"326px"}
-          controls={true}
-        />
-      </Paper>
-    </>
+        controls={true}
+        width={"100%"}
+        height={"unset"}
+      />
+    </Box>
   );
 }

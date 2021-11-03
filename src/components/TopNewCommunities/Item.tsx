@@ -9,7 +9,7 @@ export type ListItemProps = {
 export const Item = (props: ListItemProps) => {
   return (
     <ListItem button>
-      <Typography sx={{ marginLeft: "10px" }} variant="h4">
+      <Typography sx={{ marginLeft: ".5rem" }} variant="h4">
         {props.index}
       </Typography>
       <ExpandLessOutlined sx={{ marginLeft: "8px", color: "#46D160" }} />

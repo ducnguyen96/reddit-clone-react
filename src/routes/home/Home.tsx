@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useRelayEnvironment } from "react-relay";
@@ -16,7 +16,6 @@ import {
   InputContentMode,
   PostType,
 } from "./__generated__/HomeQuery.graphql";
-// import { PostList } from "./PostList";
 
 export type PostListFragment = {
   readonly id: string;
@@ -91,11 +90,17 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
   };
 
   return (
-    <>
-      <Box
-        sx={{ margin: "68px 24px", display: "flex", justifyContent: "center" }}
+    <Box
+      sx={{
+        margin: "68px 0 0 0 ",
+      }}
+    >
+      <Grid
+        container
+        spacing={2}
+        sx={{ display: "flex", justifyContent: "center" }}
       >
-        <Box sx={{ width: "640px" }}>
+        <Grid item lg={4}>
           {me && <CreatePostHome username={me.username} />}
           <SortPost
             theme={theme}
@@ -117,12 +122,12 @@ export default function Home(props: HomeQueryResponse): JSX.Element {
               <Post theme={theme} fragment={p} key={p.id} />
             ))}
           </InfiniteScroll>
-        </Box>
-        <Box sx={{ width: "310px", marginLeft: "24px" }}>
+        </Grid>
+        <Grid item lg={2}>
           <TopNewCommunities />
-        </Box>
-      </Box>
-    </>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
 

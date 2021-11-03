@@ -163,7 +163,7 @@ export const Post = ({
         sx={{ display: "flex", marginBottom: "10px", ...sx }}
         elevation={0}
       >
-        <Box sx={{ width: "40px" }}>
+        <Box sx={{ width: "2.5rem" }}>
           <UpVoteButton
             color={color}
             disabled={voteStatus.isUpVoted}
@@ -182,13 +182,13 @@ export const Post = ({
             onClickHandler={handleCreateAction}
           />
         </Box>
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "calc(100% - 2.5rem)" }}>
           {/* TOP */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <IconButton aria-label="community" color="primary">
               <Avatar
                 {...stringAvatar(fragment.community.name[0])}
-                sx={{ width: "20px", height: "20px", fontSize: "small" }}
+                sx={{ width: "1.25rem", height: "1.25rem", fontSize: "small" }}
                 sizes="small"
               />
             </IconButton>
@@ -221,7 +221,7 @@ export const Post = ({
           {/* MIDDLE */}
           {fragment.type === "Post" ? (
             <Box
-              sx={{ padding: "8px", ":hover": { cursor: "pointer" } }}
+              sx={{ padding: ".5rem", ":hover": { cursor: "pointer" } }}
               onClick={handleClickViewPost}
             >
               <Typography
@@ -280,11 +280,11 @@ export const Post = ({
           )}
 
           {/* BOTTOM */}
-          <Box sx={{ padding: "8px", display: "flex", alignItems: "center" }}>
+          <Box sx={{ padding: ".5rem", display: "flex", alignItems: "center" }}>
             <Button
               variant="text"
               startIcon={<ModeCommentOutlined />}
-              sx={{ borderRadius: "20px", marginRight: "8px", color }}
+              sx={{ borderRadius: "1.25rem", marginRight: ".5rem", color }}
               onClick={handleClickViewPost}
             >
               {`${fragment.numberOfComments} comments`}
@@ -292,24 +292,24 @@ export const Post = ({
             <Button
               variant="text"
               startIcon={<RedeemOutlined />}
-              sx={{ borderRadius: "20px", marginRight: "8px", color }}
+              sx={{ borderRadius: "1.25rem", marginRight: ".5rem", color }}
             >
               Award
             </Button>
             <Button
               variant="text"
               startIcon={<ShareOutlined />}
-              sx={{ borderRadius: "20px", marginRight: "8px", color }}
+              sx={{ borderRadius: "1.25rem", marginRight: ".5rem", color }}
             >
               Share
             </Button>
-            <Button
+            {/* <Button
               variant="text"
               startIcon={<SaveAltOutlined />}
-              sx={{ borderRadius: "20px", marginRight: "8px", color }}
+              sx={{ borderRadius: "1.25rem", marginRight: ".5rem", color }}
             >
               Save
-            </Button>
+            </Button> */}
           </Box>
 
           {/* Comments Section */}

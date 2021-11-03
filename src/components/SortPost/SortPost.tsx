@@ -63,7 +63,7 @@ export const SortPost = ({
         {StyledButton(SortPostEnum.Best)}
         {StyledButton(SortPostEnum.Hot)}
         {StyledButton(SortPostEnum.New)}
-        {StyledButton(SortPostEnum.Top)}
+        {/* {StyledButton(SortPostEnum.Top)} */}
       </Paper>
     </>
   );
