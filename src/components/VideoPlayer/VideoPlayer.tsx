@@ -10,7 +10,7 @@ export default function VideoPlayer({
   fragmentContent,
 }: VideoPlayerProps): JSX.Element {
   const id = fragmentContent.split("/")[3];
-  const url = `${mediaServer.origin}/dash/${id}/${id}`;
+  const url = `${mediaServer.origin}/dash/${id}/${id}.mpd`;
 
   return (
     // Render a YouTube video player

@@ -1,6 +1,6 @@
 export const mediaServer = {
   // origin: "http://localhost",
-  origin: "https://videos.ducnguyen96.xyz",
+  origin: "https://media.ducnguyen96.xyz",
 };
 
 export const local = {
@@ -38,7 +38,7 @@ export const test: typeof local = {
 export const prod: typeof local = {
   app: {
     ...local.app,
-    origin: "https://reddit-clone.ducnguyen96.xyz",
+    origin: "https://redditclone.ducnguyen96.xyz",
     env: "prod",
   },
   api: {
